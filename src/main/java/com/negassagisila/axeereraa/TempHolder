@@ -1,0 +1,11 @@
+public static final Color LIGHT_GREEN = new Color(102, 255, 102);
+    public static final Color LIGHT_YELLOW = new Color(255, 229, 204);
+    public static final Color LIGHT_RED = new Color(255, 102, 102);
+
+    public Color getColor() {
+        return null;
+    }
+
+    public void setColor(Color color) {
+
+    }
