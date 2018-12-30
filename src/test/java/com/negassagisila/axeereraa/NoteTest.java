@@ -2,10 +2,6 @@ package com.negassagisila.axeereraa;
 
 import org.hamcrest.Matchers;
 import org.junit.*;
-import org.hamcrest.*;
-import org.hamcrest.core.*;
-import org.mockito.*;
-import org.mockito.Mockito.*;
 
 public class NoteTest {
     private Note dummyNote;
@@ -15,18 +11,38 @@ public class NoteTest {
         dummyNote = Note.newInstance();
     }
 
+    @After
+    public void tearDown() {
+        dummyNote = null;
+    }
+
     @Test
     public void allTextShouldBeOfStringType() {
         dummyNote.setWrittenText("some bullshit");
         Assert.assertThat(
-                "the written text is not a String",dummyNote.getWrittenText(),
+                "the written text is not a String",
+                dummyNote.getWrittenText(),
                 Matchers.isA(String.class)
         );
     }
 
-    @After
-    public void tearDown() {
-        dummyNote = null;
+    @Test
+    public void shouldHaveADefaultColor() {
+        Assert.assertEquals(
+                "default color is not set",
+                NoteColor.getTheColorOfTheNote(),
+                dummyNote.getNoteColor()
+        );
+    }
+
+    @Test
+    public void shouldChangeNoteColor() {
+        dummyNote.setNoteColor(NoteColor.lightGreen);
+        Assert.assertEquals(
+                "the color of the not",
+                NoteColor.getTheColorOfTheNote(NoteColor.lightGreen),
+                dummyNote.getNoteColor()
+        );
     }
 
 }

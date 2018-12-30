@@ -15,13 +15,26 @@ public class Note {
      */
 
     private static String writtenText;
+    private static NoteColor noteColor;
+    private static final NoteColor DEFAULT_NOTE_COLOR = NoteColor.lightYellow;
 
-    public String getWrittenText() {
-        return writtenText;
+    private static Note instanceOfNote = new Note(writtenText, noteColor);
+
+    private Note(String writtenText, NoteColor noteColor) {
+        Note.writtenText = writtenText;
+        Note.noteColor = DEFAULT_NOTE_COLOR;
     }
 
-    public void setWrittenText(String writtenText) {
-        Note.writtenText = writtenText;
+    static Note newInstance() {
+        return instanceOfNote;
+    }
+
+    void setNoteColor(NoteColor chosenColor) {
+        Note.noteColor = chosenColor;
+    }
+
+    void setWrittenText(String insertedText) {
+        Note.writtenText = insertedText;
     }
 
     public static final void setNoteFont(Font font) {
@@ -40,13 +53,11 @@ public class Note {
         }
     }
 
-    public static Note onlyInstanceOfNote = new Note(writtenText);
-
-    private Note(String writtenText) {
-        Note.writtenText = writtenText;
+    String getWrittenText() {
+        return writtenText;
     }
 
-    public static Note newInstance() {
-        return onlyInstanceOfNote;
+    Color getNoteColor() {
+        return NoteColor.getTheColorOfTheNote(noteColor);
     }
 }
