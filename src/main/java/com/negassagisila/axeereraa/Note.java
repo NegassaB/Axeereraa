@@ -14,14 +14,26 @@ public class Note {
      * this will hold the written text
      */
 
-    private static String writtenText;
+    private String writtenText;
+    private NoteColor noteColor;
+    private static final NoteColor DEFAULT_NOTE_COLOR = NoteColor.lightYellow;
 
-    public String getWrittenText() {
-        return writtenText;
+    public Note(String writtenText, NoteColor noteColor) {
+        this.writtenText = writtenText;
+        this.noteColor = noteColor;
     }
 
-    public void setWrittenText(String writtenText) {
-        Note.writtenText = writtenText;
+    public Note(String writtenText) {
+        this.writtenText = writtenText;
+        noteColor = DEFAULT_NOTE_COLOR;
+    }
+
+    void setNoteColor(NoteColor chosenColor) {
+        noteColor = chosenColor;
+    }
+
+    void setWrittenText(String insertedText) {
+        writtenText = insertedText;
     }
 
     public static final void setNoteFont(Font font) {
@@ -40,13 +52,12 @@ public class Note {
         }
     }
 
-    public static Note onlyInstanceOfNote = new Note(writtenText);
-
-    private Note(String writtenText) {
-        Note.writtenText = writtenText;
+    String getWrittenText() {
+        return writtenText;
     }
 
-    public static Note newInstance() {
-        return onlyInstanceOfNote;
+    Color getNoteColor() {
+        return NoteColor.getTheColorOfTheNote(noteColor);
     }
+
 }
