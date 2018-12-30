@@ -6,6 +6,6 @@ public static final Color LIGHT_GREEN = new Color(102, 255, 102);
         return null;
     }
 
-    public void setColor(Color color) {
+    public void setColor(Color noteColor) {
 
     }
