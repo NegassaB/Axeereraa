@@ -5,20 +5,18 @@ import org.junit.*;
 
 public class NoteTest {
     private Note dummyNote;
+    private Note anotherDummyNote;
 
     @Before
     public void setUp() {
         dummyNote = new Note("some text");
+        anotherDummyNote = new Note("some other text", NoteColor.lightRed);
     }
 
     @After
     public void tearDown() {
         dummyNote = null;
-    }
-
-    @After
-    public void tearDown() {
-        dummyNote = null;
+        anotherDummyNote = null;
     }
 
     @Test
@@ -48,6 +46,14 @@ public class NoteTest {
                 NoteColor.getTheColorOfTheNote(NoteColor.lightGreen),
                 dummyNote.getNoteColor()
         );
+    }
+
+    @Test
+    public void shouldHaveABuiltInColor() {
+        Assert.assertEquals(
+                "the constructor color has not been set",
+                NoteColor.getTheColorOfTheNote(NoteColor.lightRed),
+                anotherDummyNote.getNoteColor());
     }
 
 }

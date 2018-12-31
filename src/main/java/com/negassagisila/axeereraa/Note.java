@@ -14,29 +14,6 @@ public class Note {
      * this will hold the written text
      */
 
-<<<<<<< HEAD
-    private static String writtenText;
-    private static NoteColor noteColor;
-    private static final NoteColor DEFAULT_NOTE_COLOR = NoteColor.lightYellow;
-
-    private static Note instanceOfNote = new Note(writtenText, noteColor);
-
-    private Note(String writtenText, NoteColor noteColor) {
-        Note.writtenText = writtenText;
-        Note.noteColor = DEFAULT_NOTE_COLOR;
-    }
-
-    static Note newInstance() {
-        return instanceOfNote;
-    }
-
-    void setNoteColor(NoteColor chosenColor) {
-        Note.noteColor = chosenColor;
-    }
-
-    void setWrittenText(String insertedText) {
-        Note.writtenText = insertedText;
-=======
     private String writtenText;
     private NoteColor noteColor;
     private static final NoteColor DEFAULT_NOTE_COLOR = NoteColor.lightYellow;
@@ -57,7 +34,6 @@ public class Note {
 
     void setWrittenText(String insertedText) {
         writtenText = insertedText;
->>>>>>> NoteTypeFeature
     }
 
     public static final void setNoteFont(Font font) {
