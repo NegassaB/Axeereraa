@@ -8,7 +8,12 @@ public class NoteTest {
 
     @Before
     public void setUp() {
-        dummyNote = Note.newInstance();
+        dummyNote = new Note("some text");
+    }
+
+    @After
+    public void tearDown() {
+        dummyNote = null;
     }
 
     @After
