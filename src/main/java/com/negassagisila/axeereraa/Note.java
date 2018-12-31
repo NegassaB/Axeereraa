@@ -8,7 +8,7 @@ import java.io.*;
  *  application.
  */
 
-public class Note {
+public class Note implements Serializable {
 
     /**
      * this will hold the written text
@@ -37,7 +37,7 @@ public class Note {
     }
 
     public static final void setNoteFont(Font font) {
-        File file = new File("src/main/resources/font");
+        File file = new File("src/main/resources/Roboto-Light.ttf");
         try {
             GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
                     .getLocalGraphicsEnvironment();
