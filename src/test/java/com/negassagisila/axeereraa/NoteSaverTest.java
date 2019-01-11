@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class NoteSaverTest {
-    private NoteSaver dummyNoteSaver;
+    private NoteSaver noteSaveDummy;
 
     private List<Note> exampleNotes = Arrays.asList(
             new Note("some written text"),
@@ -22,22 +22,22 @@ public class NoteSaverTest {
     @Before
     public void setUp() {
         FileOutputStream dummyFileOutputStream = Mockito.mock(FileOutputStream.class);
-        dummyNoteSaver = new NoteSaver(dummyFileOutputStream);
+        noteSaveDummy = new NoteSaver(dummyFileOutputStream);
     }
 
     @After
     public void tearDown() {
-        dummyNoteSaver = null;
+        noteSaveDummy = null;
     }
 
     @Test
     public void shouldSaveTheNote() {
-//        Mockito.when(dummyNoteSaver.save(exampleNotes)).thenReturn(true);
+//        Mockito.when(noteSaveDummy.save(exampleNotes)).thenReturn(true);
 
-//        Mockito.verify(dummyNoteSaver.save(exampleNotes), Mockito.atLeastOnce());
+//        Mockito.verify(noteSaveDummy.save(exampleNotes), Mockito.atLeastOnce());
         Assert.assertTrue(
                 "the notes have not been saved",
-                dummyNoteSaver.save(exampleNotes));
+                noteSaveDummy.save(exampleNotes));
     }
 
 }
