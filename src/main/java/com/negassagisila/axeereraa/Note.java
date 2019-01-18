@@ -1,7 +1,10 @@
 package com.negassagisila.axeereraa;
 
+import org.jetbrains.annotations.Contract;
+
 import java.awt.*;
 import java.io.*;
+import java.util.Objects;
 
 /**
  *  This class is defines the actual Note object that will be used through out this
@@ -36,7 +39,7 @@ public class Note implements Serializable {
         writtenText = insertedText;
     }
 
-    public static final void setNoteFont(Font font) {
+    public final void setNoteFont() {
         File file = new File("src/main/resources/Roboto-Light.ttf");
         try {
             GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
@@ -60,4 +63,24 @@ public class Note implements Serializable {
         return NoteColor.getTheColorOfTheNote(noteColor);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(writtenText) + Objects.hashCode(noteColor);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        boolean output;
+
+        if (o == null) {
+            output = false;
+        } else if(!(o instanceof Note)) {
+            output = false;
+        } else if (o == this) {
+            output = true;
+        } else {
+            output = this.hashCode() == o.hashCode();
+        }
+        return output;
+    }
 }

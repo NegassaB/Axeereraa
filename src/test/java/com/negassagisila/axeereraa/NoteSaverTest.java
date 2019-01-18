@@ -34,10 +34,12 @@ public class NoteSaverTest {
     public void shouldSaveTheNote() {
 //        Mockito.when(noteSaveDummy.save(exampleNotes)).thenReturn(true);
 
-//        Mockito.verify(noteSaveDummy.save(exampleNotes), Mockito.atLeastOnce());
         Assert.assertTrue(
                 "the notes have not been saved",
-                noteSaveDummy.save(exampleNotes));
+                noteSaveDummy.save(exampleNotes)
+        );
+
+        Mockito.verify(noteSaveDummy.save(exampleNotes), Mockito.atLeastOnce());
     }
 
 }
