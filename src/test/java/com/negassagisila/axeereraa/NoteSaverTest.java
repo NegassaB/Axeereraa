@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class NoteSaverTest {
+    // for no reason at all, delete after you've finished
     private NoteSaver noteSaveDummy;
 
     private List<Note> exampleNotes = Arrays.asList(

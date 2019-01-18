@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoteReaderTest {
+    // for no reason at all, delete after you've finished
     private NoteReader noteReaderDummy;
 
     private ObjectOutputStream objectOutputStream;

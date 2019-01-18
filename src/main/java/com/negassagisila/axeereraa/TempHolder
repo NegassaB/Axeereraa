@@ -26,3 +26,5 @@ public static final Color LIGHT_GREEN = new Color(102, 255, 102);
 
             return allTheNotes;
         }
+
+    // for no reason at all, delete after you've finished

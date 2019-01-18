@@ -13,6 +13,7 @@ import java.util.List;
  */
 
 class NoteReader {
+    // for no reason at all, delete after you've finished
     private final FileInputStream fileInputStream;
 
     NoteReader(FileInputStream fileInputStream) {
