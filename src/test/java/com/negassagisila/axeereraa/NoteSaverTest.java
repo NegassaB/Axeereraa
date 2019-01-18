@@ -118,7 +118,7 @@ public class NoteSaverTest {
         Note realNote = readNote(objectInputStream);
         Note dummyNote = readNote(objectInputStream2);
         //then
-        Assert.assertEquals("" +
+        Assert.assertEquals(
                 "the notes have not been saved",
                 dummyNote,
                 realNote);
@@ -131,6 +131,7 @@ public class NoteSaverTest {
      */
     private Note readNote(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
         return (Note) objectInputStream.readObject();
+
     }
 
 }
