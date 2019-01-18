@@ -18,15 +18,6 @@ class NoteSaver {
 
         for (Note n : noteList) {
             try {
-                /*fileOutputStream = new FileOutputStream(
-                        HOME +
-                                File.separator +
-                                ".axeereraa" +
-                                File.separator +
-                                "axeereraa" +
-                                LocalDateTime.now().toString() +
-                                ".ser"
-                );*/
                 new ObjectOutputStream(fileOutputStream).writeObject(n);
                 operationIndicator = true;
             } catch (IOException iex) {
