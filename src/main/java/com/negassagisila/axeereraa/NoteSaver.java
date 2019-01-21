@@ -1,29 +1,31 @@
 package com.negassagisila.axeereraa;
 
-import java.io.*;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 
 class NoteSaver {
-    //you initialize this from the main method with the save location
-    private FileOutputStream fileOutputStream;
-    private static final String HOME = System.getProperty("user.home");
+    private final FileOutputStream fileOutputStream;
 
     NoteSaver(FileOutputStream fileOutputStream) {
         this.fileOutputStream = fileOutputStream;
     }
 
-    boolean save(List<Note> noteList) {
-        boolean operationIndicator = false;
-
-        for (Note n : noteList) {
+    void save(Note note) {
+        ObjectOutputStream outputStream;
+        try {
+            outputStream = new ObjectOutputStream(fileOutputStream);
+            outputStream.writeObject(note);
+            outputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             try {
-                new ObjectOutputStream(fileOutputStream).writeObject(n);
-                operationIndicator = true;
-            } catch (IOException iex) {
-                throw new RuntimeException(iex);
+                fileOutputStream.flush();
+                fileOutputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        return operationIndicator;
     }
 }
