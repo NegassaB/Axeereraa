@@ -17,22 +17,23 @@ import java.util.List;
  */
 
 public class NoteSaverTest {
+
     private NoteSaver noteSaverDummy;
     private FileOutputStream dummyFileOutputStream;
-    private ObjectInputStream objectInputStream;
+    private ObjectInputStream objectInputStreamToTest;
 
     private FileOutputStream dummyFileOutputStream2;
     private ObjectOutputStream objectOutputStream2;
-    private ObjectInputStream objectInputStream2;
+    private ObjectInputStream objectInputStreamWithValue;
 
     @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
+    public TemporaryFolder tempFolderToTest = new TemporaryFolder();
 
     @Rule
-    public TemporaryFolder anotherTempFolder = new TemporaryFolder();
+    public TemporaryFolder tempFolderWithValue = new TemporaryFolder();
 
-    private File tempFile;
-    private File anotherTempFile;
+    private File tempFileToTest;
+    private File tempFileWithValue;
 
     /**
      * The List<Note> that will be serialized and deserialized
@@ -44,8 +45,13 @@ public class NoteSaverTest {
         exampleNotes.add(new Note("some other written text", NoteColor.lightGreen));
     }
 
-    private FileInputStream fileInputStream;
-    private FileInputStream fileInputStream2;
+    static {
+        exampleNotes.add(new Note("some written text"));
+        exampleNotes.add(new Note("some other written text", NoteColor.lightGreen));
+    }
+
+    private FileInputStream fileInputStreamToTest;
+    private FileInputStream fileInputStreamWithValue;
 
     /**
      * This method sets up & initializes the necessary components that will be used
@@ -55,19 +61,20 @@ public class NoteSaverTest {
 
     @Before
     public void setUp() throws IOException {
-        tempFile = tempFolder.newFile("someBullshit.ser");
-        anotherTempFile = anotherTempFolder.newFile("anotherBullshit.ser");
+        tempFileToTest = tempFolderToTest.newFile("someBullshit.ser");
 
-        dummyFileOutputStream = new FileOutputStream(tempFile);
+        tempFileWithValue = tempFolderWithValue.newFile("anotherBullshit.ser");
+
+        dummyFileOutputStream = new FileOutputStream(tempFileToTest);
         noteSaverDummy = new NoteSaver(dummyFileOutputStream);
 
 
-        dummyFileOutputStream2 = new FileOutputStream(anotherTempFile);
+        dummyFileOutputStream2 = new FileOutputStream(tempFileWithValue);
         objectOutputStream2 = new ObjectOutputStream(dummyFileOutputStream2);
 
-        fileInputStream = new FileInputStream(tempFile);
+        fileInputStreamToTest = new FileInputStream(tempFileToTest);
 
-        fileInputStream2 = new FileInputStream(anotherTempFile);
+        fileInputStreamWithValue = new FileInputStream(tempFileWithValue);
 
     }
 
@@ -85,15 +92,21 @@ public class NoteSaverTest {
 
         noteSaverDummy = null;
 
-        tempFile = null;
-        anotherTempFile = null;
+        tempFileToTest = null;
+        tempFileWithValue = null;
 
         objectOutputStream2.flush();
         objectOutputStream2.close();
 
-        objectInputStream.close();
-        objectInputStream2.close();
+    }
 
+    /**
+     * This method is responsible for taking the @param objectInputStreamToTest of the two
+     * different locations to deserialize and @return the Note object. Should any of
+     * the operations fail it @throws IOException & @throws ClassNotFoundException
+     */
+    private Note readNote(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
+        return (Note) objectInputStream.readObject();
     }
 
     /**
@@ -112,26 +125,58 @@ public class NoteSaverTest {
         objectOutputStream2.writeObject(exampleNotes.get(0));
 
         //when
-        objectInputStream = new ObjectInputStream(fileInputStream);
-        objectInputStream2 = new ObjectInputStream(fileInputStream2);
+        objectInputStreamToTest = new ObjectInputStream(fileInputStreamToTest);
+        objectInputStreamWithValue = new ObjectInputStream(fileInputStreamWithValue);
 
-        Note realNote = readNote(objectInputStream);
-        Note dummyNote = readNote(objectInputStream2);
+        Note realNote = readNote(objectInputStreamToTest);
+        Note dummyNote = readNote(objectInputStreamWithValue);
+
+        objectInputStreamToTest.close();
+        objectInputStreamWithValue.close();
+
         //then
         Assert.assertEquals(
                 "the notes have not been saved",
                 dummyNote,
-                realNote);
-    }
-
-    /**
-     * This method is responsible for taking the @param objectInputStream of the two
-     * different locations to deserialize and @return the Note object. Should any of
-     * the operations fail it @throws IOException & @throws ClassNotFoundException
-     */
-    private Note readNote(ObjectInputStream objectInputStream) throws IOException, ClassNotFoundException {
-        return (Note) objectInputStream.readObject();
+                realNote
+        );
 
     }
 
+    @Test
+    public void shouldSaveTheBackupNote() throws IOException, ClassNotFoundException {
+        //given
+        File bakTempFileToTest = tempFolderToTest.newFile("someBullshit.ser.bak");
+        File bakTempFileWithValue = tempFolderWithValue.newFile("someBullshit.ser.bak");
+
+        dummyFileOutputStream2 = new FileOutputStream(bakTempFileWithValue);
+        dummyFileOutputStream = new FileOutputStream(bakTempFileToTest);
+
+        objectOutputStream2 = new ObjectOutputStream(dummyFileOutputStream2);
+        noteSaverDummy = new NoteSaver(dummyFileOutputStream);
+
+        objectOutputStream2.writeObject(exampleNotes.get(0));
+        noteSaverDummy.save(exampleNotes.get(0));
+
+        fileInputStreamToTest = new FileInputStream(bakTempFileToTest);
+        fileInputStreamWithValue = new FileInputStream(bakTempFileWithValue);
+
+        objectInputStreamToTest = new ObjectInputStream(fileInputStreamToTest);
+        objectInputStreamWithValue = new ObjectInputStream(fileInputStreamWithValue);
+
+        //when
+        Note bakNote = readNote(objectInputStreamToTest);
+        Note bakNoteWithValue = readNote(objectInputStreamWithValue);
+
+        objectInputStreamToTest.close();
+        objectInputStreamWithValue.close();
+
+        //then
+        Assert.assertEquals(
+                "the backup notes have not been saved",
+                bakNote,
+                bakNoteWithValue
+        );
+
+    }
 }
