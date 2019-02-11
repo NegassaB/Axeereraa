@@ -1,16 +1,14 @@
 package com.negassagisila.axeereraa;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.*;
+import org.junit.rules.TemporaryFolder;
 
-import java.io.FileOutputStream;
-import java.util.Arrays;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoteSaverTest {
+
     private NoteSaver noteSaverDummy;
     private FileOutputStream dummyFileOutputStream;
     private ObjectInputStream objectInputStreamToTest;
@@ -28,10 +26,6 @@ public class NoteSaverTest {
     private File tempFileToTest;
     private File tempFileWithValue;
 
-    private List<Note> exampleNotes = Arrays.asList(
-            new Note("some written text"),
-            new Note("some other written text", NoteColor.lightGreen)
-    );
 
     private static List<Note> exampleNotes = new ArrayList<>();
     static {
@@ -110,10 +104,13 @@ public class NoteSaverTest {
         objectInputStreamWithValue.close();
 
         //then
-        Assert.assertEquals("" +
+        Assert.assertEquals(
                 "the notes have not been saved",
-                noteSaveDummy.save(exampleNotes)
+                dummyNote,
+                realNote
         );
+
+    }
 
     @Test
     public void shouldSaveTheBackupNote() throws IOException, ClassNotFoundException {
@@ -149,7 +146,6 @@ public class NoteSaverTest {
                 bakNote,
                 bakNoteWithValue
         );
-
 
     }
 }
