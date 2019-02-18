@@ -22,6 +22,7 @@ class NoteReader {
     /**
      * Used to set the FileInputStream. It's mainly used for the backup loading operation
      */
+
     void setFileInputStream(FileInputStream backupFileInputStream) {
         fileInputStream = backupFileInputStream;
     }
