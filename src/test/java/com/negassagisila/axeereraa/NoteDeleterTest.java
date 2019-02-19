@@ -13,7 +13,6 @@ import java.io.IOException;
  */
 
 public class NoteDeleterTest {
-    private NoteDeleter dummyNoteDeleter;
 
     @Rule
     public TemporaryFolder temporaryFolder = new TemporaryFolder();
@@ -33,8 +32,6 @@ public class NoteDeleterTest {
 
         fileToTest = temporaryFolder.newFile("someBullshit.ser");
         backupFileToTest = temporaryFolder.newFile("someBullshit2.ser");
-
-        dummyNoteDeleter = new NoteDeleter();
     }
 
     /**
@@ -46,7 +43,6 @@ public class NoteDeleterTest {
 
         fileToTest = null;
         backupFileToTest = null;
-        dummyNoteDeleter = null;
     }
 
     /**
@@ -60,7 +56,7 @@ public class NoteDeleterTest {
         //then
         Assert.assertTrue(
                 "the primary file has not been deleted",
-                dummyNoteDeleter.deleteNote(fileToTest)
+                NoteDeleter.deleteNote(fileToTest)
         );
     }
 
@@ -75,7 +71,7 @@ public class NoteDeleterTest {
         //then
         Assert.assertTrue(
                 "the backup file has not been deleted",
-                dummyNoteDeleter.deleteNote(backupFileToTest)
+                NoteDeleter.deleteNote(backupFileToTest)
         );
     }
 
@@ -89,7 +85,7 @@ public class NoteDeleterTest {
 
         Assert.assertFalse(
                 "it deleted a non existent file",
-                dummyNoteDeleter.deleteNote(new File("bullshit"))
+                NoteDeleter.deleteNote(new File("bullshit"))
         );
     }
 }

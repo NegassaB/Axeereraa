@@ -15,7 +15,7 @@ class NoteDeleter {
      * @return a boolean if the operation was successful/un-successful.
      */
 
-    boolean deleteNote(File file) {
+    static boolean deleteNote(File file) {
         return file.delete();
     }
 }
