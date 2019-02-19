@@ -17,12 +17,13 @@ import java.util.List;
  */
 
 public class NoteSaverTest {
-
     private NoteSaver noteSaverDummy;
     private FileOutputStream dummyFileOutputStream;
+    private ObjectInputStream objectInputStreamToTest;
 
     private FileOutputStream dummyFileOutputStream2;
     private ObjectOutputStream objectOutputStream2;
+    private ObjectInputStream objectInputStreamWithValue;
 
     @Rule
     public TemporaryFolder tempFolderToTest = new TemporaryFolder();
@@ -118,8 +119,8 @@ public class NoteSaverTest {
         objectOutputStream2.writeObject(exampleNotes.get(0));
 
         //when
-        ObjectInputStream objectInputStreamToTest = new ObjectInputStream(fileInputStreamToTest);
-        ObjectInputStream objectInputStreamWithValue = new ObjectInputStream(fileInputStreamWithValue);
+        objectInputStreamToTest = new ObjectInputStream(fileInputStreamToTest);
+        objectInputStreamWithValue = new ObjectInputStream(fileInputStreamWithValue);
 
         Note realNote = readNote(objectInputStreamToTest);
         Note dummyNote = readNote(objectInputStreamWithValue);
@@ -128,11 +129,29 @@ public class NoteSaverTest {
         objectInputStreamWithValue.close();
 
         //then
-        Assert.assertEquals(
-                "the notes have not been saved",
+        Assert.assertEquals("" +
+                        "the notes have not been saved",
                 dummyNote,
-                realNote
-        );
+                realNote);
+    }
+
+    @Test
+    public void shouldSaveTheBackupNote() throws IOException, ClassNotFoundException {
+        //given
+        File bakTempFileToTest = tempFolderToTest.newFile("someBullshit.ser.bak");
+        File bakTempFileWithValue = tempFolderWithValue.newFile("someBullshit.ser.bak");
+
+        dummyFileOutputStream2 = new FileOutputStream(bakTempFileWithValue);
+        dummyFileOutputStream = new FileOutputStream(bakTempFileToTest);
+
+        objectOutputStream2 = new ObjectOutputStream(dummyFileOutputStream2);
+        noteSaverDummy = new NoteSaver(dummyFileOutputStream);
+
+        objectOutputStream2.writeObject(exampleNotes.get(0));
+        noteSaverDummy.save(exampleNotes.get(0));
+
+        fileInputStreamToTest = new FileInputStream(bakTempFileToTest);
+        fileInputStreamWithValue = new FileInputStream(bakTempFileWithValue);
 
         objectInputStreamToTest = new ObjectInputStream(fileInputStreamToTest);
         objectInputStreamWithValue = new ObjectInputStream(fileInputStreamWithValue);
@@ -150,6 +169,7 @@ public class NoteSaverTest {
                 bakNote,
                 bakNoteWithValue
         );
+
 
     }
 }

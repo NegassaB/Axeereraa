@@ -1,7 +1,5 @@
 package com.negassagisila.axeereraa;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.*;
 
 public enum NoteColor {
@@ -18,7 +16,7 @@ public enum NoteColor {
         this.blueValue = blueValue;
     }
 
-    static Color getTheColorOfTheNote(@NotNull NoteColor color) {
+    static Color getTheColorOfTheNote(NoteColor color) {
         return new Color(color.redValue, color.greenValue, color.blueValue);
     }
 
