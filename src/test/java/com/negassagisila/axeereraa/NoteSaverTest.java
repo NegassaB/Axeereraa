@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This test class is used to test the NoteSaver feature/class of the Axeereraa
+ * This test class is used to test the NoteSaver feature/class of the AxeereraaUI
  * application. Since I couldn't think of a better way to test if it works or not
  * I instantiated two different ObjectOutputStream from two different FileOutputStreams.
  * Each wrote to their respective files found in their respective TemporaryFolders

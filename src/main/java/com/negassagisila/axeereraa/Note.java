@@ -1,7 +1,5 @@
 package com.negassagisila.axeereraa;
 
-import org.jetbrains.annotations.Contract;
-
 import java.awt.*;
 import java.io.*;
 import java.util.Objects;
@@ -14,7 +12,7 @@ import java.util.Objects;
 public class Note implements Serializable {
 
     /**
-     * this will hold the written text
+     * this will hold the written text.
      */
 
     private String writtenText;
@@ -74,11 +72,10 @@ public class Note implements Serializable {
 
         if (o == null) {
             output = false;
-        } else if(!(o instanceof Note)) {
+        } else if (!(o instanceof Note)) {
             output = false;
-        } else if (o == this) {
-            output = true;
-        } else {
+        } else if (o == this) output = true;
+        else {
             output = this.hashCode() == o.hashCode();
         }
         return output;

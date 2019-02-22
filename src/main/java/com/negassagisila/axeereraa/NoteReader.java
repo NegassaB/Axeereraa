@@ -30,12 +30,12 @@ class NoteReader {
     /**
      * This is the method responsible for deserializing the file from
      * the FileInputStream.
-     * It @return a List<Note>.
+     * It @return a List\<Note\>.
      * It @throws IOException & @throws ClassNotFoundException for the
      * operations of FileInputStream and ObjectInputStream
      */
 
-    List<Note> load(){
+    List<Note> load() {
         List<Note> output = new ArrayList<>();
 
         try {
@@ -51,7 +51,7 @@ class NoteReader {
     /**
      * This method is used to load the backup notes from the file system
      * when the primary file can not be found/loaded/is corrupted.
-     * @return a List<Note>.
+     * @return a List\<Note\>.
      * It @throws IOException & @throws ClassNotFoundException for the
      * operations of FileInputStream and ObjectInputStream
      */
@@ -74,15 +74,15 @@ class NoteReader {
      */
 
     private void checkFile() throws IOException {
-        if (fileInputStream.getChannel().size() == 0 ||
-                !(fileInputStream.getFD().valid())) {
+        if (fileInputStream.getChannel().size() == 0
+                || !(fileInputStream.getFD().valid())) {
             throw new IOException();
         }
 
     }
 
     /**
-     * This method is responsible for reading and populating a List<Note>
+     * This method is responsible for reading and populating a List\<Note\>
      * to the calling methods. It's only parameter is @param listOfNotes
      * that it will be populate. It @throws IOException & @throws ClassNotFoundException
      */
