@@ -1,5 +1,7 @@
 package com.negassagisila.axeereraa;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 /**
@@ -16,7 +18,7 @@ final class NoteDeleter {
      * @return a boolean if the operation was successful/un-successful.
      */
 
-    static boolean deleteNote(File noteTobeDeleted) {
+    static boolean deleteNote(@NotNull File noteTobeDeleted) {
         return noteTobeDeleted.delete();
     }
 }

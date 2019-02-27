@@ -15,7 +15,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     
-    compile files("lib/annotations-16.0.2.jar")
+    compile files("libs/annotations-16.0.2.jar")
     
     testImplementation 'org.mockito:mockito-core:2.1.0'
     testImplementation 'junit:junit:4.12'
