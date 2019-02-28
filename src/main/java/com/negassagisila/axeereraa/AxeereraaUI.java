@@ -35,6 +35,7 @@ public class AxeereraaUI extends JFrame {
         buildUI();
         setJMenuBar(axMenuBar);
 
+
         setVisible(true);
 
     }
