@@ -1,6 +1,7 @@
 package com.negassagisila.axeereraa;
 
 import javax.swing.*;
+import java.awt.*;
 
 //TODO: the next steps:
 //TODO: 1. code all the necessary actionEventListeners for the menu & it's options
@@ -25,18 +26,16 @@ public class AxeereraaUI extends JFrame {
      * A constructor that runs every time a new Axeereraa note is needed or built
      */
 
-    public AxeereraaUI() throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
-        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+    public AxeereraaUI(String systemLookAndFeel) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+
+        UIManager.setLookAndFeel(systemLookAndFeel);
 
         add(axRootPanel);
-        setSize(400, 300);
+        setSize(300, 250);
         setTitle("Axeereraa");
 
         buildUI();
         setJMenuBar(axMenuBar);
-
-
-        setVisible(true);
 
     }
 
@@ -128,12 +127,24 @@ public class AxeereraaUI extends JFrame {
 
     }
 
-    public static void main(String[] args) {
-        try {
-            new AxeereraaUI().buildUI();
-        } catch (ClassNotFoundException | UnsupportedLookAndFeelException | IllegalAccessException | InstantiationException e) {
-            e.printStackTrace();
-        }
+    AxeereraaUI setAxRootTextAreaText(String text) {
+
+        axRootTextArea.setText(text);
+        return this;
+
+    }
+
+    AxeereraaUI setAxRootTexAreaColor(Color color) {
+
+        axRootTextArea.setBackground(color);
+        return this;
+
+    }
+
+    void showAx() {
+
+        buildUI();
+        setVisible(true);
     }
 
     /**

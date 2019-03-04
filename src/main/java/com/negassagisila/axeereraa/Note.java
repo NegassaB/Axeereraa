@@ -23,13 +23,17 @@ public class Note implements Serializable {
     private static final NoteColor DEFAULT_NOTE_COLOR = NoteColor.lightYellow;
 
     public Note(String writtenText, NoteColor noteColor) {
+
         this.writtenText = writtenText;
         this.noteColor = noteColor;
+
     }
 
     public Note(String writtenText) {
+
         this.writtenText = writtenText;
         noteColor = DEFAULT_NOTE_COLOR;
+
     }
 
     void setNoteColor(NoteColor chosenColor) {
