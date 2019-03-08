@@ -16,8 +16,8 @@ public enum NoteColor {
         this.blueValue = blueValue;
     }
 
-    static Color getTheColorOfTheNote(NoteColor color) {
-        return new Color(color.redValue, color.greenValue, color.blueValue);
+    static Color getTheColorOfTheNote(NoteColor noteColor) {
+        return new Color(noteColor.redValue, noteColor.greenValue, noteColor.blueValue);
     }
 
     static Color getTheColorOfTheNote() {
@@ -27,6 +27,5 @@ public enum NoteColor {
                 lightYellow.blueValue
         );
     }
-
 
 }

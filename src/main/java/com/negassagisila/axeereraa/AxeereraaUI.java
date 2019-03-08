@@ -26,9 +26,12 @@ public class AxeereraaUI extends JFrame {
      * A constructor that runs every time a new Axeereraa note is needed or built
      */
 
-    public AxeereraaUI(String systemLookAndFeel) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+    //TODO: find a way to create a new Note object whenever this constructor runs
+    //TODO: especially if it's run from a saved file location
 
-        UIManager.setLookAndFeel(systemLookAndFeel);
+    public AxeereraaUI(AxeereraaRunner axRunner) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+
+        UIManager.setLookAndFeel(axRunner.getLookAndFeel());
 
         add(axRootPanel);
         setSize(300, 250);
@@ -39,11 +42,28 @@ public class AxeereraaUI extends JFrame {
 
     }
 
+    //TODO: find a way to create a new Note object whenever this constructor runs
+    //TODO: especially if it's run from a saved file location
+
+    public AxeereraaUI() throws UnsupportedLookAndFeelException {
+
+        UIManager.setLookAndFeel(UIManager.getLookAndFeel());
+
+        add(axRootPanel);
+        setSize(300, 250);
+        setTitle("Axeereraa");
+
+        buildUI();
+        setJMenuBar(axMenuBar);
+    }
     /**
      * This method is responsible for building the components of the UI like
      * the menu bar, the menu and it's options.
      */
 
+    //TODO: how about adding a Note parameter to this method that builds the UI
+    //TODO: it can get the existing notes as it builds the UI or
+    //TODO: create a new Note object if there aren't any saved notes
     private void buildUI() {
         axMenuBar = new JMenuBar();
 
@@ -54,7 +74,11 @@ public class AxeereraaUI extends JFrame {
 
         JMenuItem newNoteMenuItem = new JMenuItem("New Note");
         newNoteMenuItem.addActionListener(e -> {
-
+            try {
+                new AxeereraaUI().showAx();
+            } catch (UnsupportedLookAndFeelException e1) {
+                e1.printStackTrace();
+            }
         });
 
         JMenuItem deleteNoteMenuItem = new JMenuItem("Delete Note");
@@ -145,6 +169,40 @@ public class AxeereraaUI extends JFrame {
 
         buildUI();
         setVisible(true);
+    }
+
+    /**
+     * This method is used to build a Note object from the UI that will be saved.
+     * @return Note object
+     */
+
+    Note getNote() {
+        return new Note(axRootTextArea.getText(), getAxRooTextAreaColor(axRootTextArea.getBackground()));
+    }
+
+    /**
+     * this method gets the note color from the TextArea background and returns it's equivalent
+     * to the calling method as a NoteColor enum object.
+     * @param axRootTextAreaBackgroundColor contains the color of the TextArea.
+     * @return outputNoteColor is the NoteColor enum object.
+     */
+
+    private static NoteColor getAxRooTextAreaColor(Color axRootTextAreaBackgroundColor) {
+        NoteColor outputNoteColor;
+        int greenValue = axRootTextAreaBackgroundColor.getGreen();
+        switch (greenValue) {
+            case 255:
+                outputNoteColor = NoteColor.lightGreen;
+                break;
+            case 102:
+                outputNoteColor = NoteColor.lightRed;
+                break;
+            case 229:
+            default:
+                outputNoteColor = NoteColor.lightYellow;
+                break;
+        }
+        return outputNoteColor;
     }
 
     /**
