@@ -187,13 +187,15 @@ public class AxeereraaUI extends JFrame {
   
   //TODO: run this on the ED thread
   void showAx() {
-    buildUI();
-    setVisible(true);
-  }
+    EventQueue.invokeLater(() -> {
+      buildUI();
+      setVisible(true);
+      }
+    );
+}
 
   /**
    * This method is used to build a Note object from the UI that will be saved.
-   * @return Note object
    */
 
   void getNotes(List<Note> result) {
