@@ -49,7 +49,6 @@ public class AxeereraaRunner {
     if (!APP_HOME_FILE.exists() || !APP_HOME_FILE.isDirectory()) {
       APP_HOME_FILE.mkdir();
       try {
-        //TODO: run this on the ED thread
         new AxeereraaUI(axRunner)
                 .setNote(new Note(""))
                 .showAx();
@@ -60,10 +59,11 @@ public class AxeereraaRunner {
         e.printStackTrace();
       }
       //TODO: run this every 1000ms by using a thread
+      //TODO: and find a way to run it independent of this
       synchronized (notes) {
         new AxeereraaUI(axRunner).getNotes(notes);
+        saveTheNotes(APP_HOME_FILE, theFileSeparator);
       }
-      saveTheNotes(APP_HOME_FILE, theFileSeparator);
     } else {
       displayExistingNotes(axRunner);
     }
@@ -85,7 +85,7 @@ public class AxeereraaRunner {
           fileOutputStream = new FileOutputStream(
                   file  +
                           fileSeparator +
-                          ".Axeereraa".concat(String.valueOf(n.hashCode())).concat(".ser"));
+                          "Axeereraa".concat(String.valueOf(n.hashCode())).concat(".ser"));
           new NoteSaver(fileOutputStream).save(n);
         }
         fileOutputStream.flush();

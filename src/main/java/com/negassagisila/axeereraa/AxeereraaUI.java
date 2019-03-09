@@ -182,18 +182,25 @@ public class AxeereraaUI extends JFrame {
   }
   
   /**
-   * This method displays the GUI to the user.
+   * This method displays the GUI to the user on the Event Dispatcher Thread (EDT).
    */
   
   //TODO: run this on the ED thread
   void showAx() {
-    buildUI();
-    setVisible(true);
-  }
+    /**
+     * This calls the EventQueue.invokeLater() method from the EventQueue class so as to run the
+     * AxeereraaUI on the EDT.
+     */
+    
+    EventQueue.invokeLater(() -> {
+      buildUI();
+      setVisible(true);
+      }
+    );
+}
 
   /**
    * This method is used to build a Note object from the UI that will be saved.
-   * @return Note object
    */
 
   void getNotes(List<Note> result) {
