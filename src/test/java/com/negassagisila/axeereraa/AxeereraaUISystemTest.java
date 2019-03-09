@@ -5,16 +5,16 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class AxeereraaUISystemTest {
+  
+  @Test
+  public void shouldShowSampleText() {
+    ApplicationRunner runner = new ApplicationRunner();
 
-    @Test
-    public void shouldShowSampleText() {
-        ApplicationRunner runner = new ApplicationRunner();
+    String sampleText = runner.run("/home/gadd/.AxeereraaUI/sample.ser");
 
-        String sampleText = runner.run("/home/gadd/.AxeereraaUI/sample.ser");
-
-        Assert.assertThat(
-                "file not found ", sampleText,
-                Matchers.containsString("It works!!")
-        );
-    }
+    Assert.assertThat(
+            "file not found ", sampleText,
+            Matchers.containsString("It works!!")
+    );
+  }
 }
