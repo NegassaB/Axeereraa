@@ -1,9 +1,6 @@
 package com.negassagisila.axeereraa;
 
 import java.awt.*;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -39,23 +36,7 @@ public class Note implements Serializable {
   void setWrittenText(String insertedText) {
       writtenText = insertedText;
   }
-
-  public final void setNoteFont() {
-    File file = new File("src/main/resources/Roboto-Light.ttf");
-    try {
-      GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
-              .getLocalGraphicsEnvironment();
-      graphicsEnvironment.registerFont(
-              Font.createFont(
-                      Font.TRUETYPE_FONT,
-                      new FileInputStream(file)
-              )
-          );
-    } catch (IOException | FontFormatException e) {
-      e.printStackTrace();
-    }
-  }
-
+  
   String getWrittenText() {
       return writtenText;
   }

@@ -185,7 +185,6 @@ public class AxeereraaUI extends JFrame {
    * This method displays the GUI to the user on the Event Dispatcher Thread (EDT).
    */
   
-  //TODO: run this on the ED thread
   void showAx() {
     /**
      * This calls the EventQueue.invokeLater() method from the EventQueue class so as to run the
