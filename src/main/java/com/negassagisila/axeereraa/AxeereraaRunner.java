@@ -1,6 +1,7 @@
 package com.negassagisila.axeereraa;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ public class AxeereraaRunner {
   private static List<Note> notes = new ArrayList<>();
   private NoteReader noteReader;
   private static File APP_HOME_FILE = null;
+  private static Thread saverThread;
+  private static Thread readerThread;
 
   public String getLookAndFeel() {
       return lookAndFeel;
@@ -28,7 +31,7 @@ public class AxeereraaRunner {
   }
 
 
-  public static void main(String[] args) throws InstantiationException, UnsupportedLookAndFeelException, IllegalAccessException, ClassNotFoundException, IOException {
+  public static void main(String[] args) {
     
     String theSystem = System.getProperty("os.name");
     String theFileSeparator = System.getProperty("file.separator");
@@ -40,6 +43,8 @@ public class AxeereraaRunner {
 
     AxeereraaRunner axRunner = new AxeereraaRunner(theAppHome, theLookAndFeel);
   
+    AxeereraaRunner.setNoteFont();
+    
     APP_HOME_FILE = new File(axRunner.getAppHome());
     
     /**
@@ -58,14 +63,27 @@ public class AxeereraaRunner {
               InstantiationException e) {
         e.printStackTrace();
       }
-      //TODO: run this every 1000ms by using a thread
-      //TODO: and find a way to run it independent of this
-      synchronized (notes) {
-        new AxeereraaUI(axRunner).getNotes(notes);
-        saveTheNotes(APP_HOME_FILE, theFileSeparator);
-      }
+      //TODO: perhaps change it to use ScheduledExecutorService instead
+      saverThread = new Thread(() -> {
+        saverThread.setPriority(Thread.MAX_PRIORITY);
+        try {
+          Thread.sleep(1000);
+          synchronized (notes) {
+            new AxeereraaUI(axRunner).getNotes(notes);
+            saveTheNotes(APP_HOME_FILE, theFileSeparator);
+          }
+        } catch (InterruptedException |
+                ClassNotFoundException |
+                UnsupportedLookAndFeelException |
+                InstantiationException |
+                IllegalAccessException e) {
+          e.printStackTrace();
+        }
+      });
+
+      saverThread.start();
     } else {
-      displayExistingNotes(axRunner);
+      displayExistingNotes(axRunner, theFileSeparator);
     }
 
   }
@@ -101,10 +119,10 @@ public class AxeereraaRunner {
    * @param runner the AxeereraaRunner object needed to set it up.
    */
 
-  private static void displayExistingNotes(AxeereraaRunner runner) {
+  private static void displayExistingNotes(AxeereraaRunner runner, String theFileSeparator) {
     List<Note> result;
     try {
-      result = runner.getExistingNotes();
+      result = runner.getExistingNotes(theFileSeparator);
       for (Note n : result) {
         new AxeereraaUI(runner).setNote(n)
                 .showAx();
@@ -123,21 +141,21 @@ public class AxeereraaRunner {
   /**
    *
    * @param theSystem
-   * @param thePathSeparator
+   * @param theFileSeparator
    * @param theUserHome
    * @return
    */
   
-  private static String getAxEnvironment(String theSystem, String thePathSeparator, String theUserHome) {
+  private static String getAxEnvironment(String theSystem, String theFileSeparator, String theUserHome) {
     String output;
     if (theSystem.startsWith("win")) {
       if (theSystem.contains("xp")) {
         output = System.getenv("APPDATA") + "\\.Axeereraa\\";
       } else {
-        output = theUserHome + thePathSeparator + ".Axeereraa" + thePathSeparator;
+        output = theUserHome + theFileSeparator + ".Axeereraa" + theFileSeparator;
       }
     } else {
-      output = theUserHome + thePathSeparator + ".Axeereraa" + thePathSeparator;
+      output = theUserHome + theFileSeparator + ".Axeereraa" + theFileSeparator;
     }
     
     return output;
@@ -149,9 +167,9 @@ public class AxeereraaRunner {
    * @throws FileNotFoundException
    */
 
-  private List<Note> getExistingNotes() throws FileNotFoundException {
-    File savedNotesFile = new File(appHome);
-    for (File f: savedNotesFile.listFiles()) {
+  private List<Note> getExistingNotes(String theFileSeparator) throws FileNotFoundException {
+    File savedNotesLocation = new File(APP_HOME_FILE + theFileSeparator);
+    for (File f: savedNotesLocation.listFiles()) {
       noteReader = new NoteReader(new FileInputStream(f));
       synchronized (notes) {
         notes = noteReader.load();
@@ -162,6 +180,22 @@ public class AxeereraaRunner {
     }
     
     return notes;
+  }
+  
+  private static void setNoteFont() {
+    File file = new File("src/main/resources/font/Roboto-Light.ttf");
+    try {
+      GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
+              .getLocalGraphicsEnvironment();
+      graphicsEnvironment.registerFont(
+              Font.createFont(
+                      Font.TRUETYPE_FONT,
+                      new FileInputStream(file)
+              )
+      );
+    } catch (IOException | FontFormatException e) {
+      e.printStackTrace();
+    }
   }
   
   /**
