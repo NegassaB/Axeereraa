@@ -270,38 +270,10 @@ public class AxeereraaUI extends JFrame {
       pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
       pasteMenuItem.addActionListener(e -> axRootTextArea.paste());
       
-      JMenu wordWrapMenu = new JMenu("word wrap");
-      JMenuItem[] wordWrapOptions = new JMenuItem[3];
-      wordWrapOptions[0] = new JMenuItem(String.valueOf(70));
-      wordWrapOptions[1] = new JMenuItem(String.valueOf(80));
-      wordWrapOptions[2] = new JMenuItem(String.valueOf(90));
-      
-      wordWrapOptions[0].addActionListener(
-              e -> axRootTextArea.setText(
-                      WordWrap.wrap(axRootTextArea.getText(), 70)
-              )
-      );
-      
-      wordWrapOptions[1].addActionListener(
-              e -> axRootTextArea.setText(
-                      WordWrap.wrap(axRootTextArea.getText(), 80)
-              )
-      );
-      
-      wordWrapOptions[2].addActionListener(
-              e -> axRootTextArea.setText(
-              WordWrap.wrap(axRootTextArea.getText(), 90)
-              )
-      );
-      
       JMenuItem previewMenuItem = new JMenuItem("preview");
       previewMenuItem.addActionListener(e -> {
       //todo: use this to preview the markdown files
       });
-      
-      for (JMenuItem item : wordWrapOptions) {
-        wordWrapMenu.add(item);
-      }
       
       JMenuItem aboutMenuItem = new JMenuItem("about");
       aboutMenuItem.addActionListener(e ->
@@ -334,43 +306,12 @@ public class AxeereraaUI extends JFrame {
       editMenu.add(copyMenuItem);
       editMenu.add(pasteMenuItem);
       
-      viewMenu.add(wordWrapMenu);
       viewMenu.add(previewMenuItem);
       
       helpMenu.add(aboutMenuItem);
       helpMenu.add(contactDeveloperMenuItem);
       
       return this;
-    }
-  }
-  
-  /**
-   * Private inner class used to wrap the text.
-   */
-  
-  private static class WordWrap {
-    
-    /**
-     * This method is used to wrap the text inside the textarea in accordance with the user wishes.
-     * @param inputLine the textarea text
-     * @param lineLength the line length it shall be wrapped at.
-     * @return a string object that contains the written text.
-     */
-    
-    static String wrap(String inputLine, int lineLength) {
-      StringBuilder accumulator = new StringBuilder();
-      int length = inputLine.length();
-      int splitPoint = lineLength;
-      
-      accumulator.append(inputLine, 0, Math.min(length, lineLength));
-      
-      while (length > splitPoint) {
-        accumulator.append("\n");
-        accumulator.append(inputLine, splitPoint, Math.min(length, splitPoint + lineLength));
-        splitPoint += lineLength;
-      }
-      
-      return new String(accumulator);
     }
   }
   
