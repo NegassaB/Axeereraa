@@ -6,7 +6,6 @@ import java.awt.event.*;
 import java.util.List;
 
 //TODO: the next steps:
-//TODO: 2. code the right click options with their actionEventListeners
 
 //TODO: 6. code the always on top, minimize & close button actions
 //TODO: 7. run & test (currently no other option, sorry)
@@ -100,6 +99,7 @@ public class AxeereraaUI extends JFrame {
     JMenuItem pasteRightClickMenuItem = setupRightClickOptions.getPasteRightClickMenuItem();
     JMenuItem cutRightClickMenuItem = setupRightClickOptions.getCutRightClickMenuItem();
     JMenuItem previewRightClickMenuItem = setupRightClickOptions.getPreviewRightClickMenuItem();
+    JMenu changeNoteColorMenu = setupRightClickOptions.getChangeNoteColorMenu();
   
     /**
      * adds all the declared JMenuItems to the right click popup menu.
@@ -110,7 +110,7 @@ public class AxeereraaUI extends JFrame {
     rightClickOptions.add(pasteRightClickMenuItem);
     rightClickOptions.add(cutRightClickMenuItem);
     rightClickOptions.add(previewRightClickMenuItem);
-  
+    rightClickOptions.add(changeNoteColorMenu);
   }
   
   /**
@@ -346,6 +346,7 @@ public class AxeereraaUI extends JFrame {
     JMenuItem pasteRightClickMenuItem;
     JMenuItem cutRightClickMenuItem;
     JMenuItem previewRightClickMenuItem;
+    private JMenu changeNoteColorMenu;
   
     /**
      * This method is responsible for wiring up the necessary functionality of the JPopupMenu with
@@ -360,6 +361,7 @@ public class AxeereraaUI extends JFrame {
       pasteRightClickMenuItem = new JMenuItem("paste");
       cutRightClickMenuItem = new JMenuItem("cut");
       previewRightClickMenuItem = new JMenuItem("preview");
+      changeNoteColorMenu = new JMenu("change Color");
       
       selectAllRightClickMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
       selectAllRightClickMenuItem.addActionListener(e -> axRootTextArea.selectAll());
@@ -376,6 +378,27 @@ public class AxeereraaUI extends JFrame {
       previewRightClickMenuItem.addActionListener(e -> {
       
       });
+      
+      JMenuItem[] noteColorMenuItems = new JMenuItem[3];
+      noteColorMenuItems[0] = new JMenuItem("light green");
+      noteColorMenuItems[1] = new JMenuItem("light yellow");
+      noteColorMenuItems[2] = new JMenuItem("light red");
+      
+      noteColorMenuItems[0].addActionListener(e -> axRootTextArea.setBackground(
+              NoteColor.getTheColorOfTheNote(NoteColor.lightGreen)
+      ));
+      
+      noteColorMenuItems[1].addActionListener(e -> axRootTextArea.setBackground(
+              NoteColor.getTheColorOfTheNote(NoteColor.lightYellow)
+      ));
+      
+      noteColorMenuItems[2].addActionListener(e -> axRootTextArea.setBackground(
+              NoteColor.getTheColorOfTheNote(NoteColor.lightRed)
+      ));
+      
+      for (JMenuItem m : noteColorMenuItems) {
+        changeNoteColorMenu.add(m);
+      }
       
       return this;
     }
@@ -423,6 +446,14 @@ public class AxeereraaUI extends JFrame {
     
     JMenuItem getPreviewRightClickMenuItem() {
       return previewRightClickMenuItem;
+    }
+  
+    /**
+     * Method used to get the changeNoteColorMenu
+     * @return changeNoteColorMenu
+     */
+    JMenu getChangeNoteColorMenu() {
+      return changeNoteColorMenu;
     }
   }
 }
