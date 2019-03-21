@@ -2,8 +2,7 @@ package com.negassagisila.axeereraa;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 import java.util.List;
 
 //TODO: the next steps:
@@ -23,6 +22,7 @@ public class AxeereraaUI extends JFrame {
   private JMenuBar axMenuBar;
   private AxeereraaRunner axRunner;
   private static int counter;
+  private JPopupMenu rightClickOptions;
   
   /**
    * A constructor that runs every time a new Axeereraa note is needed or built
@@ -41,13 +41,15 @@ public class AxeereraaUI extends JFrame {
     add(axRootPanel);
     setSize(300, 250);
     setTitle("Axeereraa");
-
     
     axRootScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     axRootScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
     buildUI();
     setJMenuBar(axMenuBar);
+    
+    axRootTextArea.addMouseListener(new RightClickOptions());
+    
     counter++;
   }
 
@@ -61,13 +63,22 @@ public class AxeereraaUI extends JFrame {
   //TODO: create a new Note object if there aren't any saved notes
   private void buildUI() {
     axMenuBar = new JMenuBar();
-  
+    
+    rightClickOptions = new JPopupMenu();
+    
+    /**
+     * as the name suggests this sets up the JMenus and their corresponding JMenuItems
+     */
     SetUpMenuAndMenuItems setUpMenuAndMenuItems = new SetUpMenuAndMenuItems().invoke();
     JMenu fileMenu = setUpMenuAndMenuItems.getFileMenu();
     JMenu editMenu = setUpMenuAndMenuItems.getEditMenu();
     JMenu viewMenu = setUpMenuAndMenuItems.getViewMenu();
     JMenu helpMenu = setUpMenuAndMenuItems.getHelpMenu();
   
+    /**
+     * this adds all the above JMenus to the JMenuBar
+     */
+    
     axMenuBar.add(fileMenu);
     axMenuBar.add(editMenu);
     axMenuBar.add(viewMenu);
@@ -75,6 +86,27 @@ public class AxeereraaUI extends JFrame {
   
     axRootTextArea.setLineWrap(true);
     axRootTextArea.setWrapStyleWord(true);
+    
+    /**
+     * as the name suggests this sets up the right click options for the text area.
+     */
+    
+    SetupRightClickOptions setupRightClickOptions = new SetupRightClickOptions().setup();
+    JMenuItem selectAllRightClickMenuItem = setupRightClickOptions.getSelectAllRightClickMenuItem();
+    JMenuItem copyRightClickMenuItem = setupRightClickOptions.getCopyRightClickMenuItem();
+    JMenuItem pasteRightClickMenuItem = setupRightClickOptions.getPasteRightClickMenuItem();
+    JMenuItem cutRightClickMenuItem = setupRightClickOptions.getCutRightClickMenuItem();
+    JMenuItem previewRightClickMenuItem = setupRightClickOptions.getPreviewRightClickMenuItem();
+  
+    /**
+     * adds all the declared JMenuItems to the right click popup menu.
+     */
+    
+    rightClickOptions.add(selectAllRightClickMenuItem);
+    rightClickOptions.add(copyRightClickMenuItem);
+    rightClickOptions.add(pasteRightClickMenuItem);
+    rightClickOptions.add(cutRightClickMenuItem);
+    rightClickOptions.add(previewRightClickMenuItem);
     
     axRootScrollPane.getVerticalScrollBar().setPreferredSize(
             new Dimension(4, Integer.MAX_VALUE));
@@ -262,6 +294,11 @@ public class AxeereraaUI extends JFrame {
               )
       );
       
+      JMenuItem previewMenuItem = new JMenuItem("preview");
+      previewMenuItem.addActionListener(e -> {
+      //todo: use this to preview the markdown files
+      });
+      
       for (JMenuItem item : wordWrapOptions) {
         wordWrapMenu.add(item);
       }
@@ -298,6 +335,7 @@ public class AxeereraaUI extends JFrame {
       editMenu.add(pasteMenuItem);
       
       viewMenu.add(wordWrapMenu);
+      viewMenu.add(previewMenuItem);
       
       helpMenu.add(aboutMenuItem);
       helpMenu.add(contactDeveloperMenuItem);
@@ -333,6 +371,116 @@ public class AxeereraaUI extends JFrame {
       }
       
       return new String(accumulator);
+    }
+  }
+  
+  /**
+   * This class displays the right click options when the axRootTextArea is right clicked.
+   */
+  
+  private class RightClickOptions extends MouseAdapter {
+  
+    @Override
+    public void mousePressed(MouseEvent e) {
+      showRightClickOptions(e);
+    }
+    
+    private void showRightClickOptions(MouseEvent e) {
+      if (e.isPopupTrigger()) {
+        rightClickOptions.show(e.getComponent(), e.getX(), e.getY());
+      }
+    }
+  }
+  
+  /**
+   * This inner class is responsible for setting up all the necessary right click options
+   * by using JPopupMenu. It's method @method setup() will conduct the necessary steps and
+   * package it in the SetupRightClickOptions instance object.
+   */
+  
+  private class SetupRightClickOptions {
+    JMenuItem selectAllRightClickMenuItem;
+    JMenuItem copyRightClickMenuItem;
+    JMenuItem pasteRightClickMenuItem;
+    JMenuItem cutRightClickMenuItem;
+    JMenuItem previewRightClickMenuItem;
+  
+    /**
+     * This method is responsible for wiring up the necessary functionality of the JPopupMenu with
+     * it's JMenuItems instantiated above. It will set the keyboard accelerators and the
+     * ActionListeners for all the MenuItems.
+     * @return this running instance of SetupRightClickOptions class
+     */
+    
+    SetupRightClickOptions setup() {
+      selectAllRightClickMenuItem = new JMenuItem("select all");
+      copyRightClickMenuItem = new JMenuItem("copy");
+      pasteRightClickMenuItem = new JMenuItem("paste");
+      cutRightClickMenuItem = new JMenuItem("cut");
+      previewRightClickMenuItem = new JMenuItem("preview");
+      
+      selectAllRightClickMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
+      selectAllRightClickMenuItem.addActionListener(e -> axRootTextArea.selectAll());
+      
+      copyRightClickMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
+      copyRightClickMenuItem.addActionListener(e -> axRootTextArea.copy());
+      
+      pasteRightClickMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
+      pasteRightClickMenuItem.addActionListener(e -> axRootTextArea.paste());
+      
+      cutRightClickMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
+      cutRightClickMenuItem.addActionListener(e -> axRootTextArea.cut());
+      
+      previewRightClickMenuItem.addActionListener(e -> {
+      
+      });
+      
+      return this;
+    }
+  
+    /**
+     * Method used to get the selectAllRightClickMenuItem
+     * @return selectAllRightClickMenuItem
+     */
+    
+    JMenuItem getSelectAllRightClickMenuItem() {
+      return selectAllRightClickMenuItem;
+    }
+  
+    /**
+     * Method used to get the copyRightClickMenuItem
+     * @return copyRightClickMenuItem
+     */
+    
+    JMenuItem getCopyRightClickMenuItem() {
+      return copyRightClickMenuItem;
+    }
+  
+    /**
+     * Method used to get the pasteRightClickMenuItem
+     * @return pasteRightClickMenuItem
+     */
+    
+    JMenuItem getPasteRightClickMenuItem() {
+      return pasteRightClickMenuItem;
+    }
+  
+    /**
+     * Method used to get the cutRightClickMenuItem
+     * @return cutRightClickMenuItem
+     */
+    
+    JMenuItem getCutRightClickMenuItem() {
+      return cutRightClickMenuItem;
+    }
+  
+    /**
+     * Method used to get the previewRightClickMenuItem
+     * @return previewRightClickMenuItem
+     */
+    
+    JMenuItem getPreviewRightClickMenuItem() {
+      return previewRightClickMenuItem;
     }
   }
 }
