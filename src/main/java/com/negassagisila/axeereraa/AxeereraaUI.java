@@ -7,7 +7,7 @@ import java.util.List;
 
 //TODO: the next steps:
 
-//TODO: 6. code the always on top, minimize & close button actions
+//TODO: set some kinda sign that shows if stayOnTop is set to true
 //TODO: 7. run & test (currently no other option, sorry)
 
 /**
@@ -76,7 +76,7 @@ public class AxeereraaUI extends JFrame {
     JMenu editMenu = setUpMenuAndMenuItems.getEditMenu();
     JMenu viewMenu = setUpMenuAndMenuItems.getViewMenu();
     JMenu helpMenu = setUpMenuAndMenuItems.getHelpMenu();
-  
+    
     /**
      * this adds all the above JMenus to the JMenuBar
      */
@@ -85,7 +85,7 @@ public class AxeereraaUI extends JFrame {
     axMenuBar.add(editMenu);
     axMenuBar.add(viewMenu);
     axMenuBar.add(helpMenu);
-  
+    
     axRootTextArea.setLineWrap(true);
     axRootTextArea.setWrapStyleWord(true);
     
@@ -188,7 +188,7 @@ public class AxeereraaUI extends JFrame {
    * @return outputNoteColor is the NoteColor enum object.
    */
 
-  private static NoteColor getAxRooTextAreaColor(Color axRootTextAreaBackgroundColor) {
+  private NoteColor getAxRooTextAreaColor(Color axRootTextAreaBackgroundColor) {
     NoteColor outputNoteColor;
     if (axRootTextAreaBackgroundColor == NoteColor.getTheColorOfTheNote(NoteColor.lightGreen)) {
       outputNoteColor = NoteColor.lightGreen;
@@ -198,6 +198,26 @@ public class AxeereraaUI extends JFrame {
       outputNoteColor = NoteColor.lightYellow;
     }
     return outputNoteColor;
+  }
+  
+  /**
+   * This method is responsible for setting the application always on top
+   * @param status boolean value to be passed to the instance of the UI.
+   */
+  
+  private void stayOnTop(boolean status) {
+
+    /**
+     * called on every instance of the UI, method from the JFrame class.
+     */
+    
+    this.setAlwaysOnTop(status);
+  
+    /**
+     * changes the icon to lock to show that the result
+     */
+    
+    //todo: find a way to display the lock.png image on the axMenuBar
   }
 
   /**
@@ -276,6 +296,16 @@ public class AxeereraaUI extends JFrame {
       //todo: use this to preview the markdown files
       });
       
+      JMenu stayOnTopMenu = new JMenu("stay on top");
+      JMenuItem alwaysOnTopItem = new JMenuItem("Always");
+      JMenuItem neverOnTopItem = new JMenuItem("Never");
+      
+      alwaysOnTopItem.addActionListener(e -> stayOnTop(true));
+      neverOnTopItem.addActionListener(e -> stayOnTop(false));
+      
+      stayOnTopMenu.add(alwaysOnTopItem);
+      stayOnTopMenu.add(neverOnTopItem);
+      
       JMenuItem aboutMenuItem = new JMenuItem("about");
       aboutMenuItem.addActionListener(e ->
               JOptionPane.showMessageDialog(
@@ -308,12 +338,14 @@ public class AxeereraaUI extends JFrame {
       editMenu.add(pasteMenuItem);
       
       viewMenu.add(previewMenuItem);
+      viewMenu.add(stayOnTopMenu);
       
       helpMenu.add(aboutMenuItem);
       helpMenu.add(contactDeveloperMenuItem);
       
       return this;
     }
+    
   }
   
   /**
