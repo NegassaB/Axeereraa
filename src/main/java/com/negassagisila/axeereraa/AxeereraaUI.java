@@ -216,10 +216,19 @@ public class AxeereraaUI extends JFrame {
     /**
      * changes the icon to lock to show that the result
      */
-    
-    //todo: find a way to display the lock.png image on the axMenuBar
+    displayLockIcon(status);
   }
-
+  
+  /**
+   * changes the icon to lock to show that the result
+   */
+  
+  private void displayLockIcon(boolean status) {
+    if (status) {
+      //todo: find a way to display the lock.png image on the axMenuBar
+    }
+  }
+  
   /**
    * This inner class is responsible for setting up the Menus and their items.
    * the entire text found in the
