@@ -1,13 +1,15 @@
 package com.negassagisila.axeereraa;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
 import java.util.List;
 
-//TODO: the next steps:
-
-//TODO: set some kinda sign that shows if stayOnTop is set to true
 //TODO: 7. run & test (currently no other option, sorry)
 
 /**
@@ -28,7 +30,7 @@ public class AxeereraaUI extends JFrame {
    */
   
   //TODO: find a way to create a new Note object whenever this constructor runs
-  //TODO: especially if it's run from a saved file location
+  //especially if it's run from a saved file location
 
   public AxeereraaUI(AxeereraaRunner axRunner) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
     
@@ -43,7 +45,6 @@ public class AxeereraaUI extends JFrame {
     
     buildUI();
     setJMenuBar(axMenuBar);
-    
     counter++;
   }
 
@@ -53,8 +54,8 @@ public class AxeereraaUI extends JFrame {
    */
 
   //TODO: how about adding a Note parameter to this method that builds the UI
-  //TODO: it can get the existing notes as it builds the UI or
-  //TODO: create a new Note object if there aren't any saved notes
+  //it can get the existing notes as it builds the UI or
+  //create a new Note object if there aren't any saved notes
   private void buildUI() {
     axMenuBar = new JMenuBar();
     
@@ -159,6 +160,7 @@ public class AxeereraaUI extends JFrame {
     
     EventQueue.invokeLater(() -> {
       buildUI();
+      setLocationByPlatform(true);
       setVisible(true);
       }
     );
@@ -216,17 +218,37 @@ public class AxeereraaUI extends JFrame {
     /**
      * changes the icon to lock to show that the result
      */
+    
     displayLockIcon(status);
   }
   
   /**
    * changes the icon to lock to show that the result
+   * @param status boolean value of that checks if the always on top has been set
    */
   
   private void displayLockIcon(boolean status) {
+    //todo: find a way to display the lock.png image on the axRootPanel or axRootTextArea
     if (status) {
-      //todo: find a way to display the lock.png image on the axMenuBar
+      try {
+        Image lockIcon = ImageIO.read(this.getClass().getResource("/images/lock.png"));
+        
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
     }
+  }
+  
+  /**
+   * This method is responsible for removing the deleted note from the UI
+   */
+  private void removeNote() {
+    this.setVisible(false);
+    //TODO: delete the Note file as well and close the application if it's the last instance
+    if (counter == 0) {
+      System.exit(0);
+    }
+    //NoteDeleter.deleteNote();
   }
   
   /**
@@ -256,7 +278,7 @@ public class AxeereraaUI extends JFrame {
     JMenu getHelpMenu() {
       return helpMenu;
     }
-    
+  
     SetUpMenuAndMenuItems invoke() {
       fileMenu = new JMenu("file");
       editMenu = new JMenu("edit");
@@ -279,9 +301,7 @@ public class AxeereraaUI extends JFrame {
       );
       
       JMenuItem deleteNoteMenuItem = new JMenuItem("Delete Note");
-      deleteNoteMenuItem.addActionListener(e -> {
-      
-      }
+      deleteNoteMenuItem.addActionListener(e -> removeNote()
       );
       
       JMenuItem selectAllMenuItem = new JMenuItem("select all");
