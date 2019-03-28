@@ -249,7 +249,6 @@ public class AxeereraaUI extends JFrame {
     AxeereraaUI.COUNTER--;
     //TODO: delete the Note file as well and close the application if it's the last instance
     if (AxeereraaUI.COUNTER == 0) {
-      System.out.println(AxeereraaUI.COUNTER);
       System.exit(0);
     }
     //NoteDeleter.deleteNote();
