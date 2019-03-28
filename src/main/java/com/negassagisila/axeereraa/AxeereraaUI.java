@@ -22,7 +22,7 @@ public class AxeereraaUI extends JFrame {
   private JTextArea axRootTextArea;
   private JMenuBar axMenuBar;
   private AxeereraaRunner axRunner;
-  private static int counter;
+  private static int COUNTER;
   private JPopupMenu rightClickOptions;
   
   /**
@@ -45,7 +45,8 @@ public class AxeereraaUI extends JFrame {
     
     buildUI();
     setJMenuBar(axMenuBar);
-    counter++;
+
+    AxeereraaUI.COUNTER++;
   }
 
   /**
@@ -171,7 +172,8 @@ public class AxeereraaUI extends JFrame {
    */
 
   void getNotes(List<Note> result) {
-    while (counter != 0) {
+    int x = AxeereraaUI.COUNTER;
+    while (x != 0) {
       result.add(
               new Note(
                       this.axRootTextArea.getText(), getAxRooTextAreaColor(
@@ -179,7 +181,7 @@ public class AxeereraaUI extends JFrame {
               )
               )
       );
-      counter--;
+      x--;
     }
   }
   
@@ -244,8 +246,10 @@ public class AxeereraaUI extends JFrame {
    */
   private void removeNote() {
     this.setVisible(false);
+    AxeereraaUI.COUNTER--;
     //TODO: delete the Note file as well and close the application if it's the last instance
-    if (counter == 0) {
+    if (AxeereraaUI.COUNTER == 0) {
+      System.out.println(AxeereraaUI.COUNTER);
       System.exit(0);
     }
     //NoteDeleter.deleteNote();

@@ -24,7 +24,7 @@ class NoteReader {
      */
 
     void setFileInputStream(FileInputStream backupFileInputStream) {
-        fileInputStream = backupFileInputStream;
+      fileInputStream = backupFileInputStream;
     }
 
     /**
@@ -36,16 +36,16 @@ class NoteReader {
      */
 
     List<Note> load() {
-        List<Note> output = new ArrayList<>();
+      List<Note> output = new ArrayList<>();
 
-        try {
-            read(output);
-        } catch (ClassNotFoundException | IOException e) {
-            loadBackup();
-            e.printStackTrace();
-        }
-
-        return output;
+      try {
+        read(output);
+      } catch (ClassNotFoundException | IOException e) {
+        loadBackup();
+        e.printStackTrace();
+      }
+      
+      return output;
     }
 
     /**
@@ -57,15 +57,15 @@ class NoteReader {
      */
 
     List<Note> loadBackup() {
-        List<Note> output = new ArrayList<>();
+      List<Note> output = new ArrayList<>();
+      
+      try {
+        read(output);
+      } catch (IOException | ClassNotFoundException e) {
+        e.printStackTrace();
+      }
 
-        try {
-            read(output);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        return output;
+      return output;
     }
 
     /**
@@ -74,10 +74,10 @@ class NoteReader {
      */
 
     private void checkFile() throws IOException {
-        if (fileInputStream.getChannel().size() == 0
-                || !(fileInputStream.getFD().valid())) {
-            throw new IOException();
-        }
+      if (fileInputStream.getChannel().size() == 0
+              || !(fileInputStream.getFD().valid())) {
+        throw new IOException();
+      }
 
     }
 
@@ -88,14 +88,14 @@ class NoteReader {
      */
 
     private void read(List<Note> listOfNotes) throws IOException, ClassNotFoundException {
-        ObjectInputStream objectInputStream;
-        checkFile();
-        objectInputStream = new ObjectInputStream(fileInputStream);
-        while (fileInputStream.available() != 0) {
-            Note n = (Note) objectInputStream.readObject();
-            listOfNotes.add(n);
-        }
-        fileInputStream.close();
-        objectInputStream.close();
+      ObjectInputStream objectInputStream;
+      checkFile();
+      objectInputStream = new ObjectInputStream(fileInputStream);
+      while (fileInputStream.available() != 0) {
+        Note n = (Note) objectInputStream.readObject();
+        listOfNotes.add(n);
+      }
+      fileInputStream.close();
+      objectInputStream.close();
     }
 }
