@@ -29,6 +29,7 @@ public class AxeereraaRunner {
   public AxeereraaRunner(String appHome, String lookAndFeel) {
     this.appHome = appHome;
     this.lookAndFeel = lookAndFeel;
+    setNoteFont();
   }
   
   /**
