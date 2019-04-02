@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.List;
 
 //TODO: 7. run & test (currently no other option, sorry)
 
@@ -167,27 +166,10 @@ public class AxeereraaUI extends JFrame {
 }
 
   /**
-   * This method is used to build a Note object from the UI that will be saved.
-   */
-
-  void getNotes(List<Note> result) {
-    int x = AxeereraaUI.COUNTER;
-    while (x != 0) {
-      result.add(
-              new Note(
-                      this.axRootTextArea.getText(), getAxRooTextAreaColor(
-                              this.axRootTextArea.getBackground()
-              )
-              )
-      );
-      x--;
-    }
-  }
-  
-  /**
    * This method is used to get a single instance of the Note object from the UI
    * @return new Note(written text, NoteColor)
    */
+  
   private Note getNote() {
     return new Note(this.axRootTextArea.getText(), this.getAxRooTextAreaColor(this.axRootTextArea.getBackground()));
   }
@@ -251,6 +233,7 @@ public class AxeereraaUI extends JFrame {
   /**
    * This method is responsible for removing the deleted note from the UI
    */
+  
   private void removeNote() {
     this.setVisible(false);
     AxeereraaUI.COUNTER--;

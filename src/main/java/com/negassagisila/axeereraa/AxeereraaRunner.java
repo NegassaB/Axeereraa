@@ -5,9 +5,6 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 //TODO: javadoc the shit outta the entire project
 //TODO-BIG: start preparing the markdown parser to handle markdown support and add a button to the file menu that says new .md note
@@ -16,7 +13,6 @@ public class AxeereraaRunner {
   private final String appHome;
   private static List<Note> notes = new ArrayList<>();
   private static File APP_HOME_FILE = null;
-  private static ScheduledExecutorService scheduledExecutorService;
   private static AxeereraaUI axUI;
   private static String theSystem;
   
@@ -46,7 +42,6 @@ public class AxeereraaRunner {
   public AxeereraaRunner(String appHome, String lookAndFeel) {
     this.appHome = appHome;
     this.lookAndFeel = lookAndFeel;
-    setNoteFont();
   }
   
   /**
@@ -55,6 +50,7 @@ public class AxeereraaRunner {
    */
   public static void main(String[] args) {
     //TODO: create and instantiate a new concrete Note object for every UI instance
+    //TODO: perhaps using a builder for the UI instance that will call a factory method for the Note object
     theSystem = System.getProperty("os.name");
     theFileSeparator = System.getProperty("file.separator");
     theUserHome = System.getProperty("user.home");
@@ -74,12 +70,6 @@ public class AxeereraaRunner {
     }
   
     APP_HOME_FILE = new File(axRunner.getAppHome());
-  
-    /**
-     * instantiate the scheduledExecutorService that will handle the timely
-     * execution of the @method saveTheNotes() method.
-     */
-    scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
     
     /**
      * check if the folder exists or not & if it's empty or not, and create it if it doesn't exist.
@@ -89,11 +79,6 @@ public class AxeereraaRunner {
       APP_HOME_FILE.mkdir();
       axUI.setNote(new Note("")).showAx();
       
-      /**
-       * used to run the scheduleExecutorService that saves  the notes.
-       */
-      runScheduleExecutorService(axUI);
-    
     } else {
       displayExistingNotes(axRunner, theFileSeparator);
     }
@@ -101,24 +86,13 @@ public class AxeereraaRunner {
   }
   
   /**
-   * This method is responsible for collecting the list of Note object and
-   * calling the saveNote() method.
-   */
-  private static void saveTheNotes() {
-    synchronized (notes) {
-      for (Note n : notes) {
-        AxeereraaRunner.saveNote(n);
-      }
-    }
-  }
-  
-  /**
    * used to save a single Note instance
    */
+  
   static void saveNote(Note n) {
     try {
       final String noteName = "Axeereraa".concat(String.valueOf(n.hashCode())).concat(".ser");
-      new NoteSaver(new FileOutputStream(APP_HOME_FILE + "/" + noteName)).save(n);
+      new NoteSaver(new FileOutputStream(APP_HOME_FILE + theFileSeparator + noteName)).save(n);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
@@ -146,38 +120,6 @@ public class AxeereraaRunner {
     } finally {
       result = null;
     }
-  }
-  
-  /**
-   * method that handles the running of the ScheduledExecutorService instance object.
-   * @param instanceUI the running object of the AxeereraaUI class
-   */
-  private static void runScheduleExecutorService(AxeereraaUI instanceUI) {
-    scheduledExecutorService.scheduleAtFixedRate(() -> {
-      synchronized (notes) {
-        instanceUI.getNotes(notes);
-        deleteTheNotes();
-        saveTheNotes();
-      }
-    }, 10, 1, TimeUnit.SECONDS);
-  }
-  
-  /**
-   *
-   */
-  private static void deleteTheNotes() {
-    File savedNotesLocation = new File(APP_HOME_FILE + theFileSeparator);
-  for (File f : savedNotesLocation.listFiles()) {
-    AxeereraaRunner.deleteNote(f);
-  }
-  }
-  
-  /**
-   * This method is used to delete a single Note file
-   * @param file Note file to be deleted.
-   */
-  private static void deleteNote(File file) {
-    new NoteDeleter(file).deleteNote();
   }
   
   /**
@@ -209,20 +151,14 @@ public class AxeereraaRunner {
    */
   private List<Note> getExistingNotes(String theFileSeparator) throws FileNotFoundException {
     File savedNotesLocation = new File(APP_HOME_FILE + theFileSeparator);
-    List<Note> output;
     for (File f: savedNotesLocation.listFiles()) {
       NoteReader noteReader = new NoteReader(new FileInputStream(f));
       synchronized (notes) {
-        //todo: this continuously overwrites the list of Note objects find a way to populate it instead
-        //notes = noteReader.load();
         try {
           notes.add(noteReader.read());
         } catch (IOException | ClassNotFoundException e) {
           e.printStackTrace();
         }
-        /*if (notes.isEmpty()) {
-          notes = noteReader.loadBackup();
-        }*/
       }
     }
     
@@ -232,6 +168,7 @@ public class AxeereraaRunner {
   /**
    *
    */
+  
   private static void setNoteFont() {
     File file = new File("src/main/resources/font/Roboto-Light.ttf");
     try {
