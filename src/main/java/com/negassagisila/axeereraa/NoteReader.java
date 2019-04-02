@@ -98,4 +98,14 @@ class NoteReader {
       fileInputStream.close();
       objectInputStream.close();
     }
+    
+    Note read() throws IOException, ClassNotFoundException {
+      ObjectInputStream objectInputStream;
+      checkFile();
+      objectInputStream = new ObjectInputStream(fileInputStream);
+      Note n = (Note) objectInputStream.readObject();
+      objectInputStream.close();
+      fileInputStream.close();
+      return n;
+    }
 }

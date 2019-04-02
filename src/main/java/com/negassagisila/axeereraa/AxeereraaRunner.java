@@ -5,9 +5,6 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 //TODO: javadoc the shit outta the entire project
 //TODO-BIG: start preparing the markdown parser to handle markdown support and add a button to the file menu that says new .md note
@@ -16,7 +13,23 @@ public class AxeereraaRunner {
   private final String appHome;
   private static List<Note> notes = new ArrayList<>();
   private static File APP_HOME_FILE = null;
-  private static ScheduledExecutorService scheduledExecutorService;
+  private static AxeereraaUI axUI;
+  private static String theSystem;
+  
+  private static String theFileSeparator;
+  private static String theUserHome;
+  
+  private static String getTheSystem() {
+    return theSystem;
+  }
+  
+  private static String getTheFileSeparator() {
+    return theFileSeparator;
+  }
+  
+  private static String getTheUserHome() {
+    return theUserHome;
+  }
   
   public String getLookAndFeel() {
       return lookAndFeel;
@@ -29,7 +42,6 @@ public class AxeereraaRunner {
   public AxeereraaRunner(String appHome, String lookAndFeel) {
     this.appHome = appHome;
     this.lookAndFeel = lookAndFeel;
-    setNoteFont();
   }
   
   /**
@@ -38,25 +50,26 @@ public class AxeereraaRunner {
    */
   public static void main(String[] args) {
     //TODO: create and instantiate a new concrete Note object for every UI instance
-    String theSystem = System.getProperty("os.name");
-    String theFileSeparator = System.getProperty("file.separator");
-    String theUserHome = System.getProperty("user.home");
+    //TODO: perhaps using a builder for the UI instance that will call a factory method for the Note object
+    theSystem = System.getProperty("os.name");
+    theFileSeparator = System.getProperty("file.separator");
+    theUserHome = System.getProperty("user.home");
 
     String theLookAndFeel = UIManager.getSystemLookAndFeelClassName();
 
-    String theAppHome = getAxEnvironment(theSystem, theFileSeparator, theUserHome);
+    String theAppHome = getAxEnvironment(getTheSystem(), getTheFileSeparator(), getTheUserHome());
 
     AxeereraaRunner axRunner = new AxeereraaRunner(theAppHome, theLookAndFeel);
   
     AxeereraaRunner.setNoteFont();
     
-    APP_HOME_FILE = new File(axRunner.getAppHome());
+    try {
+      axUI = new AxeereraaUI(axRunner);
+    } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | UnsupportedLookAndFeelException e) {
+      e.printStackTrace();
+    }
   
-    /**
-     * instantiate the scheduledExecutorService that will handle the timely
-     * execution of the @method saveTheNotes() method.
-     */
-    scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+    APP_HOME_FILE = new File(axRunner.getAppHome());
     
     /**
      * check if the folder exists or not & if it's empty or not, and create it if it doesn't exist.
@@ -64,22 +77,8 @@ public class AxeereraaRunner {
      */
     if (!APP_HOME_FILE.exists() || !APP_HOME_FILE.isDirectory()) {
       APP_HOME_FILE.mkdir();
-      try {
-        new AxeereraaUI(axRunner)
-                .setNote(new Note(""))
-                .showAx();
-      } catch (ClassNotFoundException |
-              UnsupportedLookAndFeelException |
-              IllegalAccessException |
-              InstantiationException e) {
-        e.printStackTrace();
-      }
-  
-      /**
-       * used to run the scheduleExecutorService that saves  the notes.
-       */
-      runScheduleExecutorService(axRunner, theFileSeparator);
-    
+      axUI.setNote(new Note("")).showAx();
+      
     } else {
       displayExistingNotes(axRunner, theFileSeparator);
     }
@@ -87,25 +86,14 @@ public class AxeereraaRunner {
   }
   
   /**
-   * This method is used to save the notes, it calls the save() from the NoteSaver class
-   * @param file the note location that will be used to construct the FileOutputStream
+   * used to save a single Note instance
    */
-  private static void saveTheNotes(File file, String fileSeparator) {
-    FileOutputStream fileOutputStream = null;
-    
+  
+  static void saveNote(Note n) {
     try {
-      synchronized (notes) {
-        for (Note n : notes) {
-          fileOutputStream = new FileOutputStream(
-                  file  +
-                          fileSeparator +
-                          "Axeereraa".concat(String.valueOf(n.hashCode())).concat(".ser"));
-          new NoteSaver(fileOutputStream).save(n);
-        }
-        fileOutputStream.flush();
-        fileOutputStream.close();
-      }
-    } catch (IOException e) {
+      final String noteName = "Axeereraa".concat(String.valueOf(n.hashCode())).concat(".ser");
+      new NoteSaver(new FileOutputStream(APP_HOME_FILE + theFileSeparator + noteName)).save(n);
+    } catch (FileNotFoundException e) {
       e.printStackTrace();
     }
   }
@@ -114,6 +102,7 @@ public class AxeereraaRunner {
    * This method is used to display the pre-existing notes that were already saved.
    * @param runner the AxeereraaRunner object needed to set it up.
    */
+  //TODO: this is not getting and displaying all the saved notes
   private static void displayExistingNotes(AxeereraaRunner runner, String theFileSeparator) {
     List<Note> result;
     try {
@@ -131,27 +120,6 @@ public class AxeereraaRunner {
     } finally {
       result = null;
     }
-  }
-  
-  /**
-   * method that handles the running of the ScheduledExecutorService instance object.
-   * @param runner
-   * @param theFileSeparator
-   */
-  private static void runScheduleExecutorService(AxeereraaRunner runner, String theFileSeparator) {
-    scheduledExecutorService.scheduleAtFixedRate(() -> {
-      try {
-        synchronized (notes) {
-          new AxeereraaUI(runner).getNotes(notes);
-          saveTheNotes(APP_HOME_FILE, theFileSeparator);
-        }
-      } catch (IllegalAccessException |
-              InstantiationException |
-              ClassNotFoundException |
-              UnsupportedLookAndFeelException e) {
-        e.printStackTrace();
-      }
-    }, 10, 1, TimeUnit.SECONDS);
   }
   
   /**
@@ -186,9 +154,10 @@ public class AxeereraaRunner {
     for (File f: savedNotesLocation.listFiles()) {
       NoteReader noteReader = new NoteReader(new FileInputStream(f));
       synchronized (notes) {
-        notes = noteReader.load();
-        if (notes.isEmpty()) {
-          notes = noteReader.loadBackup();
+        try {
+          notes.add(noteReader.read());
+        } catch (IOException | ClassNotFoundException e) {
+          e.printStackTrace();
         }
       }
     }
@@ -199,6 +168,7 @@ public class AxeereraaRunner {
   /**
    *
    */
+  
   private static void setNoteFont() {
     File file = new File("src/main/resources/font/Roboto-Light.ttf");
     try {

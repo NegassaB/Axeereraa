@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
-import java.util.List;
 
 //TODO: 7. run & test (currently no other option, sorry)
 
@@ -144,7 +143,7 @@ public class AxeereraaUI extends JFrame {
    */
 
   private void setAxRootTexAreaColor(Color color) {
-    axRootPanel.setBackground(color);
+    //axRootPanel.setBackground(color);
     axRootTextArea.setBackground(color);
   }
   
@@ -168,21 +167,12 @@ public class AxeereraaUI extends JFrame {
 }
 
   /**
-   * This method is used to build a Note object from the UI that will be saved.
+   * This method is used to get a single instance of the Note object from the UI
+   * @return new Note(written text, NoteColor)
    */
-
-  void getNotes(List<Note> result) {
-    int x = AxeereraaUI.COUNTER;
-    while (x != 0) {
-      result.add(
-              new Note(
-                      this.axRootTextArea.getText(), getAxRooTextAreaColor(
-                              this.axRootTextArea.getBackground()
-              )
-              )
-      );
-      x--;
-    }
+  
+  private Note getNote() {
+    return new Note(this.axRootTextArea.getText(), this.getAxRooTextAreaColor(this.axRootTextArea.getBackground()));
   }
   
   /**
@@ -194,9 +184,9 @@ public class AxeereraaUI extends JFrame {
 
   private NoteColor getAxRooTextAreaColor(Color axRootTextAreaBackgroundColor) {
     NoteColor outputNoteColor;
-    if (axRootTextAreaBackgroundColor == NoteColor.getTheColorOfTheNote(NoteColor.lightGreen)) {
+    if (axRootTextAreaBackgroundColor.equals(NoteColor.getTheColorOfTheNote(NoteColor.lightGreen))) {
       outputNoteColor = NoteColor.lightGreen;
-    } else if (axRootTextAreaBackgroundColor == NoteColor.getTheColorOfTheNote(NoteColor.lightRed)) {
+    } else if (axRootTextAreaBackgroundColor.equals(NoteColor.getTheColorOfTheNote(NoteColor.lightRed))) {
       outputNoteColor = NoteColor.lightRed;
     } else {
       outputNoteColor = NoteColor.lightYellow;
@@ -244,6 +234,7 @@ public class AxeereraaUI extends JFrame {
   /**
    * This method is responsible for removing the deleted note from the UI
    */
+  
   private void removeNote() {
     this.setVisible(false);
     AxeereraaUI.COUNTER--;
@@ -307,6 +298,9 @@ public class AxeereraaUI extends JFrame {
       deleteNoteMenuItem.addActionListener(e -> removeNote()
       );
       
+      JMenuItem saveNoteMenuItem = new JMenuItem("save");
+      saveNoteMenuItem.addActionListener(e -> AxeereraaRunner.saveNote(AxeereraaUI.this.getNote()));
+      
       JMenuItem selectAllMenuItem = new JMenuItem("select all");
       selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
       selectAllMenuItem.addActionListener(e -> axRootTextArea.selectAll());
@@ -325,7 +319,7 @@ public class AxeereraaUI extends JFrame {
       
       JMenuItem previewMenuItem = new JMenuItem("preview");
       previewMenuItem.addActionListener(e -> {
-      //todo: use this to preview the markdown files
+      //todo: use this to preview the markdown files, you can use JEditorPane or JTextField
       });
       
       JMenu stayOnTopMenu = new JMenu("stay on top");
@@ -363,6 +357,7 @@ public class AxeereraaUI extends JFrame {
       
       fileMenu.add(newNoteMenuItem);
       fileMenu.add(deleteNoteMenuItem);
+      fileMenu.add(saveNoteMenuItem);
       
       editMenu.add(selectAllMenuItem);
       editMenu.add(cutMenuItem);
@@ -440,7 +435,7 @@ public class AxeereraaUI extends JFrame {
       cutRightClickMenuItem.addActionListener(e -> axRootTextArea.cut());
       
       previewRightClickMenuItem.addActionListener(e -> {
-      
+      //TODO: use a JEditorPane to preview the written markdown file
       });
       
       JMenuItem[] noteColorMenuItems = new JMenuItem[3];
