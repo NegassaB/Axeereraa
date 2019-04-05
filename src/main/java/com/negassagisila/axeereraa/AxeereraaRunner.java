@@ -111,6 +111,9 @@ public class AxeereraaRunner {
         new AxeereraaUI(runner).setNote(n)
                 .showAx();
       }
+      if (result.isEmpty()) {
+        axUI.setNote(new Note("")).showAx();
+      }
     } catch (FileNotFoundException |
             IllegalAccessException |
             InstantiationException |
