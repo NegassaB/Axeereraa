@@ -99,7 +99,7 @@ public class AxeereraaRunner {
   }
   
   /**
-   * This method is used to display the pre-existing notes that were already saved.
+   * This method is used to convertToMarkdown the pre-existing notes that were already saved.
    * @param runner the AxeereraaRunner object needed to set it up.
    */
   //TODO: this is not getting and displaying all the saved notes

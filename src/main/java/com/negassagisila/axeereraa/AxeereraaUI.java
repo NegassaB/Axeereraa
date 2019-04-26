@@ -67,7 +67,7 @@ public class AxeereraaUI extends JFrame {
     axRootTextArea.addMouseListener(new RightClickOptions());
     
     axRootScrollPane.getVerticalScrollBar().setPreferredSize(
-            new Dimension(4, Integer.MAX_VALUE));
+            new Dimension(3, Integer.MAX_VALUE));
     
     /**
      * as the name suggests this sets up the JMenus and their corresponding JMenuItems
@@ -99,7 +99,7 @@ public class AxeereraaUI extends JFrame {
     JMenuItem copyRightClickMenuItem = setupRightClickOptions.getCopyRightClickMenuItem();
     JMenuItem pasteRightClickMenuItem = setupRightClickOptions.getPasteRightClickMenuItem();
     JMenuItem cutRightClickMenuItem = setupRightClickOptions.getCutRightClickMenuItem();
-    JMenuItem previewRightClickMenuItem = setupRightClickOptions.getPreviewRightClickMenuItem();
+    JMenuItem markdownOption = setupRightClickOptions.getMarkdownOption();
     JMenu changeNoteColorMenu = setupRightClickOptions.getChangeNoteColorMenu();
   
     /**
@@ -110,7 +110,7 @@ public class AxeereraaUI extends JFrame {
     rightClickOptions.add(copyRightClickMenuItem);
     rightClickOptions.add(pasteRightClickMenuItem);
     rightClickOptions.add(cutRightClickMenuItem);
-    rightClickOptions.add(previewRightClickMenuItem);
+    rightClickOptions.add(markdownOption);
     rightClickOptions.add(changeNoteColorMenu);
   }
   
@@ -220,7 +220,7 @@ public class AxeereraaUI extends JFrame {
    */
   
   private void displayLockIcon(boolean status) {
-    //todo: find a way to display the lock.png image on the axRootPanel or axRootTextArea
+    //todo: find a way to convertToMarkdown the lock.png image on the axRootPanel or axRootTextArea
     if (status) {
       try {
         Image lockIcon = ImageIO.read(this.getClass().getResource("/images/lock.png"));
@@ -243,6 +243,49 @@ public class AxeereraaUI extends JFrame {
       System.exit(0);
     }
     //NoteDeleter.deleteNote();
+  }
+  
+  /**
+   * This method is responsible for displaying the markdown containing JEditorPane.
+   * It calls the remove() method from the root scroll pane to remove the currently displayed
+   * axRootTextArea and instead calls the add() method to insert the jEditorPane.
+   * @param jEditorPane the editor pane that contains the markdown that will be displayed
+   */
+  private void showMarkdown(JEditorPane jEditorPane) {
+    jEditorPane.addMouseListener(new RightClickOptions());
+    this.axRootScrollPane.getViewport().remove(axRootTextArea);
+    this.axRootScrollPane.getViewport().add(jEditorPane);
+  }
+  
+  /**
+   * This method is responsible for showing the raw text instead of the markdown.
+   */
+  private void showRawText() {
+    this.axRootScrollPane.getViewport().add(axRootTextArea);
+  }
+  
+  /**
+   * This method creates and displayMarkdown a JDialog.
+   * @param titleOfDialog that will be passed to the JDialog setTitle() method.
+   */
+  private void displayDialog(String titleOfDialog) {
+    JDialog dialog = new JDialog(this);
+    dialog.setLayout(new BorderLayout());
+    JLabel dialogText = new JLabel();
+    if (titleOfDialog.equals("About")) {
+      dialogText.setText("Axeereraa version 1.0.0\n" +
+              "For more info \ngo to the github repo:\n" +
+              "github.com/NegassaB/Axeereraa");
+    } else if(titleOfDialog.equals("Contact")){
+      dialogText.setText("You can reach the developer via\n" +
+              "email or using github.\n" +
+              "negassab16@gmail.com\n" +
+              "and github.com/NegassaB");
+    }
+    dialog.setSize(150, 100);
+    dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    dialog.add(dialogText);
+    dialog.setVisible(true);
   }
   
   /**
@@ -279,8 +322,9 @@ public class AxeereraaUI extends JFrame {
       viewMenu = new JMenu("view");
       helpMenu = new JMenu("help");
       
-      JMenuItem newNoteMenuItem = new JMenuItem("New Note");
-      newNoteMenuItem.addActionListener(e -> {
+      JMenuItem plainNoteMenuItem = new JMenuItem("New Note");
+      
+      plainNoteMenuItem.addActionListener(e -> {
         try {
           new AxeereraaUI(axRunner)
                   .setNote(new Note(""))
@@ -317,10 +361,16 @@ public class AxeereraaUI extends JFrame {
       pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
       pasteMenuItem.addActionListener(e -> axRootTextArea.paste());
       
-      JMenuItem previewMenuItem = new JMenuItem("preview");
-      previewMenuItem.addActionListener(e -> {
-      //todo: use this to preview the markdown files, you can use JEditorPane or JTextField
-      });
+      JMenu previewMenu = new JMenu("preview");
+      JMenuItem[] previewMenuItems = new JMenuItem[2];
+      previewMenuItems[0] = new JMenuItem("show markdown");
+      previewMenuItems[0].addActionListener(e -> showMarkdown(DisplayMarkdown.displayMarkdown(axRootTextArea.getText())));
+      previewMenuItems[1] = new JMenuItem("show raw text");
+      previewMenuItems[1].addActionListener(e -> showRawText());
+      
+      for (JMenuItem m : previewMenuItems) {
+        previewMenu.add(m);
+      }
       
       JMenu stayOnTopMenu = new JMenu("stay on top");
       JMenuItem alwaysOnTopItem = new JMenuItem("Always");
@@ -333,29 +383,12 @@ public class AxeereraaUI extends JFrame {
       stayOnTopMenu.add(neverOnTopItem);
       
       JMenuItem aboutMenuItem = new JMenuItem("about");
-      aboutMenuItem.addActionListener(e ->
-              JOptionPane.showMessageDialog(
-                      AxeereraaUI.this,
-                      "Axeereraa version 1.0.0\n " +
-                              "For more info \ngo to the github repo: " +
-                              "\ngithub.com/NegassaB/Axeereraa",
-                      "About",
-                      JOptionPane.INFORMATION_MESSAGE
-              )
-      );
+      aboutMenuItem.addActionListener(e -> displayDialog("About"));
       
       JMenuItem contactDeveloperMenuItem = new JMenuItem("contact developer");
-      contactDeveloperMenuItem.addActionListener(e ->
-              JOptionPane.showMessageDialog(
-                      AxeereraaUI.this,
-                      "You can reach the developer via\n email or using github.\n"
-                              + "negassab16@gmail.com\n and github.com/NegassaB",
-                      "Contact Developer",
-                      JOptionPane.INFORMATION_MESSAGE
-              )
-      );
+      contactDeveloperMenuItem.addActionListener(e -> displayDialog("Contact"));
       
-      fileMenu.add(newNoteMenuItem);
+      fileMenu.add(plainNoteMenuItem);
       fileMenu.add(deleteNoteMenuItem);
       fileMenu.add(saveNoteMenuItem);
       
@@ -364,7 +397,7 @@ public class AxeereraaUI extends JFrame {
       editMenu.add(copyMenuItem);
       editMenu.add(pasteMenuItem);
       
-      viewMenu.add(previewMenuItem);
+      viewMenu.add(previewMenu);
       viewMenu.add(stayOnTopMenu);
       
       helpMenu.add(aboutMenuItem);
@@ -404,8 +437,8 @@ public class AxeereraaUI extends JFrame {
     JMenuItem copyRightClickMenuItem;
     JMenuItem pasteRightClickMenuItem;
     JMenuItem cutRightClickMenuItem;
-    JMenuItem previewRightClickMenuItem;
-    private JMenu changeNoteColorMenu;
+    JMenu markdownOption;
+    JMenu changeNoteColorMenu;
   
     /**
      * This method is responsible for wiring up the necessary functionality of the JPopupMenu with
@@ -419,7 +452,7 @@ public class AxeereraaUI extends JFrame {
       copyRightClickMenuItem = new JMenuItem("copy");
       pasteRightClickMenuItem = new JMenuItem("paste");
       cutRightClickMenuItem = new JMenuItem("cut");
-      previewRightClickMenuItem = new JMenuItem("preview");
+      markdownOption = new JMenu("preview");
       changeNoteColorMenu = new JMenu("change Color");
       
       selectAllRightClickMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
@@ -433,10 +466,6 @@ public class AxeereraaUI extends JFrame {
       
       cutRightClickMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
       cutRightClickMenuItem.addActionListener(e -> axRootTextArea.cut());
-      
-      previewRightClickMenuItem.addActionListener(e -> {
-      //TODO: use a JEditorPane to preview the written markdown file
-      });
       
       JMenuItem[] noteColorMenuItems = new JMenuItem[3];
       noteColorMenuItems[0] = new JMenuItem("light green");
@@ -457,6 +486,16 @@ public class AxeereraaUI extends JFrame {
       
       for (JMenuItem m : noteColorMenuItems) {
         changeNoteColorMenu.add(m);
+      }
+      
+      JMenuItem[] markdownOptions = new JMenuItem[2];
+      markdownOptions[0] = new JMenuItem("show markdown");
+      markdownOptions[0].addActionListener(e -> showMarkdown(DisplayMarkdown.displayMarkdown(axRootTextArea.getText())));
+      markdownOptions[1] = new JMenuItem("back to raw text");
+      markdownOptions[1].addActionListener(e -> showRawText());
+      
+      for (JMenuItem m : markdownOptions) {
+        markdownOption.add(m);
       }
       
       return this;
@@ -499,12 +538,12 @@ public class AxeereraaUI extends JFrame {
     }
   
     /**
-     * Method used to get the previewRightClickMenuItem
-     * @return previewRightClickMenuItem
+     * Method used to get the markdownOption
+     * @return markdownOption
      */
     
-    JMenuItem getPreviewRightClickMenuItem() {
-      return previewRightClickMenuItem;
+    JMenuItem getMarkdownOption() {
+      return markdownOption;
     }
   
     /**
