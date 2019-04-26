@@ -27,3 +27,48 @@ public static final Color LIGHT_GREEN = new Color(102, 255, 102);
             return allTheNotes;
         }
         }
+
+# First Cup of Java EE examples
+
+This repository contains the example source that is used in the
+[First Cup of Java EE Tutorial](https://javaee.github.io/firstcup).
+This software is provided to you under the terms described in
+this [License](LICENSE.txt). By using this software, you agree to accept
+the terms, as described by this license.
+
+If you are interested in contributing to this project, please see the
+[Contributing](CONTRIBUTING.md) page.
+
+If you encounter any issues, or wish to report bugs, please log into
+GitHub and file an
+[Issue](https://github.com/javaee/firstcup-examples/issues).
+
+## Pre requisites
+
+- Maven
+- JDK8+
+- GlassFish 5
+
+## Build the examples
+
+Clone this repository and build the examples using:
+
+```
+mvn package
+```
+
+new JDialog(AxeereraaUI.this,
+              "About").getContentPane().add(new JTextField(
+                              "Axeereraa version 1.0.0\n " +
+                              "For more info \ngo to the github repo: " +
+                              "\ngithub.com/NegassaB/Axeereraa", 0
+                      )
+              ).setVisible(true)
+
+JOptionPane.showMessageDialog(
+                      AxeereraaUI.this,
+                      "You can reach the developer via\n email or using github.\n"
+                              + "negassab16@gmail.com\n and github.com/NegassaB",
+                      "Contact Developer",
+                      JOptionPane.INFORMATION_MESSAGE
+              )

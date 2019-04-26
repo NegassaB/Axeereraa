@@ -28,7 +28,7 @@ public class Note implements Serializable {
     this.writtenText = writtenText;
     noteColor = DEFAULT_NOTE_COLOR;
   }
-
+  
   void setNoteColor(NoteColor chosenColor) {
       noteColor = chosenColor;
   }
