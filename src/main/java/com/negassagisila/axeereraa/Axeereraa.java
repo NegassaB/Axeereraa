@@ -5,6 +5,7 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 //TODO: javadoc the shit outta the entire project
 public class Axeereraa {
@@ -154,7 +155,7 @@ public class Axeereraa {
    */
   private List<Note> getExistingNotes(String theFileSeparator) throws FileNotFoundException {
     File savedNotesLocation = new File(APP_HOME_FILE + theFileSeparator);
-    for (File f: savedNotesLocation.listFiles()) {
+    for (File f: Objects.requireNonNull(savedNotesLocation.listFiles())) {
       NoteReader noteReader = new NoteReader(new FileInputStream(f));
       synchronized (notes) {
         try {

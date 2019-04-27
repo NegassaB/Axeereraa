@@ -344,46 +344,54 @@ public class AxeereraaUI extends JFrame {
       viewMenu = new JMenu("view");
       helpMenu = new JMenu("help");
       
-      JMenuItem plainNoteMenuItem = new JMenuItem("New Note");
+      JMenuItem[] fileMenuItems = new JMenuItem[3];
+      fileMenuItems[0] = new JMenuItem("New Note");
+      fileMenuItems[1] = new JMenuItem("Delete Note");
+      fileMenuItems[2] = new JMenuItem("Save");
       
-      plainNoteMenuItem.addActionListener(e -> {
-        try {
-          new AxeereraaUI(axRunner)
-                  .setNote(new Note(""))
-                  .showAx();
-        } catch (UnsupportedLookAndFeelException |
-                IllegalAccessException |
-                ClassNotFoundException |
-                InstantiationException |
-                FontFormatException |
-                IOException ex) {
-          ex.printStackTrace();
-        }
+      fileMenuItems[0].addActionListener(e -> {
+                try {
+                  new AxeereraaUI(axRunner)
+                          .setNote(new Note(""))
+                          .showAx();
+                } catch (UnsupportedLookAndFeelException |
+                        IllegalAccessException |
+                        ClassNotFoundException |
+                        InstantiationException |
+                        FontFormatException |
+                        IOException ex) {
+                  ex.printStackTrace();
+                }
               }
       );
+      fileMenuItems[1].addActionListener(e -> removeNote());
+      fileMenuItems[2].addActionListener(e -> Axeereraa.saveNote(AxeereraaUI.this.getNote()));
       
-      JMenuItem deleteNoteMenuItem = new JMenuItem("Delete Note");
-      deleteNoteMenuItem.addActionListener(e -> removeNote()
-      );
+      for(JMenuItem m : fileMenuItems) {
+        fileMenu.add(m);
+      }
+  
+      JMenuItem[] editMenuItems = new JMenuItem[4];
+      editMenuItems[0] = new JMenuItem("Select All");
+      editMenuItems[1] = new JMenuItem("Cut");
+      editMenuItems[2] = new JMenuItem("Copy");
+      editMenuItems[3] = new JMenuItem("Paste");
       
-      JMenuItem saveNoteMenuItem = new JMenuItem("save");
-      saveNoteMenuItem.addActionListener(e -> Axeereraa.saveNote(AxeereraaUI.this.getNote()));
+      editMenuItems[0].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
+      editMenuItems[0].addActionListener(e -> axRootTextArea.selectAll());
       
-      JMenuItem selectAllMenuItem = new JMenuItem("select all");
-      selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));
-      selectAllMenuItem.addActionListener(e -> axRootTextArea.selectAll());
+      editMenuItems[1].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
+      editMenuItems[1].addActionListener(e -> axRootTextArea.cut());
       
-      JMenuItem cutMenuItem = new JMenuItem("cut");
-      cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, InputEvent.CTRL_MASK));
-      cutMenuItem.addActionListener(e -> axRootTextArea.cut());
+      editMenuItems[2].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
+      editMenuItems[2].addActionListener(e -> axRootTextArea.copy());
       
-      JMenuItem copyMenuItem = new JMenuItem("copy");
-      copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK));
-      copyMenuItem.addActionListener(e -> axRootTextArea.copy());
+      editMenuItems[3].setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
+      editMenuItems[3].addActionListener(e -> axRootTextArea.paste());
       
-      JMenuItem pasteMenuItem = new JMenuItem("paste");
-      pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, InputEvent.CTRL_MASK));
-      pasteMenuItem.addActionListener(e -> axRootTextArea.paste());
+      for (JMenuItem m : editMenuItems) {
+        editMenu.add(m);
+      }
       
       JMenu previewMenu = new JMenu("preview");
       JMenuItem[] previewMenuItems = new JMenuItem[2];
@@ -405,27 +413,20 @@ public class AxeereraaUI extends JFrame {
       
       stayOnTopMenu.add(alwaysOnTopItem);
       stayOnTopMenu.add(neverOnTopItem);
-      
-      JMenuItem aboutMenuItem = new JMenuItem("about");
-      aboutMenuItem.addActionListener(e -> displayDialog("About"));
-      
-      JMenuItem contactDeveloperMenuItem = new JMenuItem("contact developer");
-      contactDeveloperMenuItem.addActionListener(e -> displayDialog("Contact"));
-      
-      fileMenu.add(plainNoteMenuItem);
-      fileMenu.add(deleteNoteMenuItem);
-      fileMenu.add(saveNoteMenuItem);
-      
-      editMenu.add(selectAllMenuItem);
-      editMenu.add(cutMenuItem);
-      editMenu.add(copyMenuItem);
-      editMenu.add(pasteMenuItem);
-      
+  
       viewMenu.add(previewMenu);
       viewMenu.add(stayOnTopMenu);
       
-      helpMenu.add(aboutMenuItem);
-      helpMenu.add(contactDeveloperMenuItem);
+      JMenuItem[] helpMenuItems = new JMenuItem[2];
+      helpMenuItems[0] = new JMenuItem("About");
+      helpMenuItems[0].addActionListener(e -> displayDialog("About"));
+      
+      helpMenuItems[1] = new JMenuItem("Contact Developer");
+      helpMenuItems[1].addActionListener(e -> displayDialog("Contact"));
+      
+      for (JMenuItem m : helpMenuItems) {
+        helpMenu.add(m);
+      }
       
       return this;
     }
