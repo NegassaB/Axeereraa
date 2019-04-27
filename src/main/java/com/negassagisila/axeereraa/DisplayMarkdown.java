@@ -10,7 +10,7 @@ import javax.swing.*;
  *
  */
 
-public class DisplayMarkdown {
+class DisplayMarkdown {
   
   /**
    * @param writtenMarkdownText markdown document to be parsed by

@@ -9,7 +9,7 @@ import java.io.File;
 
 class NoteDeleter {
 
-  File file;
+  private File file;
   
   public NoteDeleter(File file) {
     this.file = file;

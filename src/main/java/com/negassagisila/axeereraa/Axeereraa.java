@@ -43,10 +43,6 @@ public class Axeereraa {
     this.lookAndFeel = lookAndFeel;
   }
   
-  /**
-   *
-   * @param args
-   */
   public static void main(String[] args) {
     //TODO: create and instantiate a new concrete Note object for every UI instance
     //TODO: perhaps using a builder for the UI instance that will call a factory method for the Note object
@@ -74,7 +70,8 @@ public class Axeereraa {
     APP_HOME_FILE = new File(axRunner.getAppHome());
     
     /**
-     * checks if the folder exists or not & if it's empty or not, and creates it if it doesn't exist.
+     * checks if the folder exists or not & if it's empty or not,
+     * and creates it if it doesn't exist.
      */
     
     if (!APP_HOME_FILE.exists() || !APP_HOME_FILE.isDirectory()) {
@@ -122,8 +119,6 @@ public class Axeereraa {
             FontFormatException |
             IOException e) {
       e.printStackTrace();
-    } finally {
-      result = null;
     }
   }
   
@@ -133,7 +128,8 @@ public class Axeereraa {
    * @param theSystem name of the OS the application runs in
    * @param theFileSeparator the specific file separator of the OS
    * @param theUserHome the user folder in which the data will be saved in
-   * @return String representation of t
+   * @return a String that's comprised of the user home, the file separator,
+   * application name & the file separator.
    */
   private static String getAxEnvironment(String theSystem, String theFileSeparator, String theUserHome) {
     String output;
