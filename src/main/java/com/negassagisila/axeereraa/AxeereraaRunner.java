@@ -31,11 +31,11 @@ public class AxeereraaRunner {
     return theUserHome;
   }
   
-  public String getLookAndFeel() {
+  String getLookAndFeel() {
       return lookAndFeel;
   }
 
-  public String getAppHome() {
+  private String getAppHome() {
       return appHome;
   }
 
@@ -61,24 +61,27 @@ public class AxeereraaRunner {
 
     AxeereraaRunner axRunner = new AxeereraaRunner(theAppHome, theLookAndFeel);
   
-    AxeereraaRunner.setNoteFont();
+//    AxeereraaRunner.setNoteFont();
     
     try {
       axUI = new AxeereraaUI(axRunner);
-    } catch (IllegalAccessException | InstantiationException | ClassNotFoundException | UnsupportedLookAndFeelException e) {
+    } catch (IllegalAccessException |
+            InstantiationException |
+            ClassNotFoundException |
+            UnsupportedLookAndFeelException |
+            FontFormatException |
+            IOException e) {
       e.printStackTrace();
     }
   
     APP_HOME_FILE = new File(axRunner.getAppHome());
     
     /**
-     * check if the folder exists or not & if it's empty or not, and create it if it doesn't exist.
-     * Immediately save the current note.
+     * checks if the folder exists or not & if it's empty or not, and creates it if it doesn't exist.
      */
     if (!APP_HOME_FILE.exists() || !APP_HOME_FILE.isDirectory()) {
       APP_HOME_FILE.mkdir();
       axUI.setNote(new Note("")).showAx();
-      
     } else {
       displayExistingNotes(axRunner, theFileSeparator);
     }
@@ -114,11 +117,12 @@ public class AxeereraaRunner {
       if (result.isEmpty()) {
         axUI.setNote(new Note("")).showAx();
       }
-    } catch (FileNotFoundException |
-            IllegalAccessException |
+    } catch (IllegalAccessException |
             InstantiationException |
             UnsupportedLookAndFeelException |
-            ClassNotFoundException e) {
+            ClassNotFoundException |
+            FontFormatException |
+            IOException e) {
       e.printStackTrace();
     } finally {
       result = null;
@@ -172,21 +176,21 @@ public class AxeereraaRunner {
    *
    */
   
-  private static void setNoteFont() {
-    File file = new File("src/main/resources/font/Roboto-Light.ttf");
+  /*private static void setNoteFont() {
     try {
-      GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment
-              .getLocalGraphicsEnvironment();
+      GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
       graphicsEnvironment.registerFont(
               Font.createFont(
                       Font.TRUETYPE_FONT,
-                      new FileInputStream(file)
+                      AxeereraaRunner.class.getResourceAsStream(
+                              "/font/Roboto-Medium.ttf"
+                      )
               )
       );
     } catch (IOException | FontFormatException e) {
       e.printStackTrace();
     }
-  }
+  }*/
   
   /**
    *

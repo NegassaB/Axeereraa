@@ -23,7 +23,8 @@ public class AxeereraaUI extends JFrame {
   private AxeereraaRunner axRunner;
   private static int COUNTER;
   private JPopupMenu rightClickOptions;
-  
+  private Font f = Font.createFont(Font.TRUETYPE_FONT,
+          AxeereraaRunner.class.getResourceAsStream("/font/Roboto-Medium.ttf"));
   /**
    * A constructor that runs every time a new Axeereraa note is needed or built
    */
@@ -31,10 +32,14 @@ public class AxeereraaUI extends JFrame {
   //TODO: find a way to create a new Note object whenever this constructor runs
   //especially if it's run from a saved file location
 
-  public AxeereraaUI(AxeereraaRunner axRunner) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException {
+  public AxeereraaUI(AxeereraaRunner axRunner) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException, FontFormatException {
     
     this.axRunner = axRunner;
     UIManager.setLookAndFeel(axRunner.getLookAndFeel());
+    
+  
+    AxeereraaUI.this.setFont(f);
+//    axRootPanel.setFont(f);
     
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     
@@ -265,27 +270,29 @@ public class AxeereraaUI extends JFrame {
   }
   
   /**
-   * This method creates and displayMarkdown a JDialog.
+   * This method creates and displays a JDialog that
+   * contains the necessary info about the application.
    * @param titleOfDialog that will be passed to the JDialog setTitle() method.
    */
   private void displayDialog(String titleOfDialog) {
-    JDialog dialog = new JDialog(this);
-    dialog.setLayout(new BorderLayout());
-    JLabel dialogText = new JLabel();
+    String messageText = null;
     if (titleOfDialog.equals("About")) {
-      dialogText.setText("Axeereraa version 1.0.0\n" +
+      messageText = "Axeereraa version 1.0.0\n" +
               "For more info \ngo to the github repo:\n" +
-              "github.com/NegassaB/Axeereraa");
+              "github.com/NegassaB/Axeereraa";
     } else if(titleOfDialog.equals("Contact")){
-      dialogText.setText("You can reach the developer via\n" +
+      messageText = "You can reach the developer via\n" +
               "email or using github.\n" +
               "negassab16@gmail.com\n" +
-              "and github.com/NegassaB");
+              "and github.com/NegassaB";
     }
-    dialog.setSize(150, 100);
-    dialog.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-    dialog.add(dialogText);
-    dialog.setVisible(true);
+    
+    JOptionPane.showMessageDialog(
+            AxeereraaUI.this,
+            messageText,
+            titleOfDialog,
+            JOptionPane.INFORMATION_MESSAGE
+    );
   }
   
   /**
@@ -332,10 +339,12 @@ public class AxeereraaUI extends JFrame {
         } catch (UnsupportedLookAndFeelException |
                 IllegalAccessException |
                 ClassNotFoundException |
-                InstantiationException ex) {
+                InstantiationException |
+                FontFormatException |
+                IOException ex) {
           ex.printStackTrace();
         }
-      }
+              }
       );
       
       JMenuItem deleteNoteMenuItem = new JMenuItem("Delete Note");
