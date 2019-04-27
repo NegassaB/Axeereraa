@@ -20,11 +20,11 @@ public class AxeereraaUI extends JFrame {
   private JScrollPane axRootScrollPane;
   private JTextArea axRootTextArea;
   private JMenuBar axMenuBar;
-  private AxeereraaRunner axRunner;
+  private Axeereraa axRunner;
   private static int COUNTER;
   private JPopupMenu rightClickOptions;
   private Font f = Font.createFont(Font.TRUETYPE_FONT,
-          AxeereraaRunner.class.getResourceAsStream("/font/Roboto-Medium.ttf"));
+          Axeereraa.class.getResourceAsStream("/font/Roboto-Medium.ttf"));
   /**
    * A constructor that runs every time a new Axeereraa note is needed or built
    */
@@ -32,7 +32,7 @@ public class AxeereraaUI extends JFrame {
   //TODO: find a way to create a new Note object whenever this constructor runs
   //especially if it's run from a saved file location
 
-  public AxeereraaUI(AxeereraaRunner axRunner) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException, FontFormatException {
+  public AxeereraaUI(Axeereraa axRunner) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException, FontFormatException {
     
     this.axRunner = axRunner;
     UIManager.setLookAndFeel(axRunner.getLookAndFeel());
@@ -61,7 +61,7 @@ public class AxeereraaUI extends JFrame {
   //TODO: how about adding a Note parameter to this method that builds the UI
   //it can get the existing notes as it builds the UI or
   //create a new Note object if there aren't any saved notes
-  private void buildUI() {
+  private void buildUI() throws IOException {
     axMenuBar = new JMenuBar();
     
     rightClickOptions = new JPopupMenu();
@@ -117,6 +117,14 @@ public class AxeereraaUI extends JFrame {
     rightClickOptions.add(cutRightClickMenuItem);
     rightClickOptions.add(markdownOption);
     rightClickOptions.add(changeNoteColorMenu);
+    
+    AxeereraaUI.this.setIconImage(
+            ImageIO.read(
+                    this.getClass().getResource(
+                            "/images/icon.png"
+                    )
+            )
+    );
   }
   
   /**
@@ -164,9 +172,13 @@ public class AxeereraaUI extends JFrame {
      */
     
     EventQueue.invokeLater(() -> {
-      buildUI();
-      setLocationByPlatform(true);
-      setVisible(true);
+      try {
+        buildUI();
+        setLocationByPlatform(true);
+        setVisible(true);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
       }
     );
 }
@@ -225,7 +237,7 @@ public class AxeereraaUI extends JFrame {
    */
   
   private void displayLockIcon(boolean status) {
-    //todo: find a way to convertToMarkdown the lock.png image on the axRootPanel or axRootTextArea
+    //todo: find a way to display the lock.png image on the axRootPanel or axRootTextArea
     if (status) {
       try {
         Image lockIcon = ImageIO.read(this.getClass().getResource("/images/lock.png"));
@@ -243,7 +255,7 @@ public class AxeereraaUI extends JFrame {
   private void removeNote() {
     this.setVisible(false);
     AxeereraaUI.COUNTER--;
-    //TODO: delete the Note file as well and close the application if it's the last instance
+    //TODO: delete the Note file
     if (AxeereraaUI.COUNTER == 0) {
       System.exit(0);
     }
@@ -352,7 +364,7 @@ public class AxeereraaUI extends JFrame {
       );
       
       JMenuItem saveNoteMenuItem = new JMenuItem("save");
-      saveNoteMenuItem.addActionListener(e -> AxeereraaRunner.saveNote(AxeereraaUI.this.getNote()));
+      saveNoteMenuItem.addActionListener(e -> Axeereraa.saveNote(AxeereraaUI.this.getNote()));
       
       JMenuItem selectAllMenuItem = new JMenuItem("select all");
       selectAllMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.CTRL_MASK));

@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //TODO: javadoc the shit outta the entire project
-//TODO-BIG: start preparing the markdown parser to handle markdown support and add a button to the file menu that says new .md note
-public class AxeereraaRunner {
+public class Axeereraa {
   private final String lookAndFeel;
   private final String appHome;
   private static List<Note> notes = new ArrayList<>();
@@ -39,7 +38,7 @@ public class AxeereraaRunner {
       return appHome;
   }
 
-  public AxeereraaRunner(String appHome, String lookAndFeel) {
+  public Axeereraa(String appHome, String lookAndFeel) {
     this.appHome = appHome;
     this.lookAndFeel = lookAndFeel;
   }
@@ -59,9 +58,7 @@ public class AxeereraaRunner {
 
     String theAppHome = getAxEnvironment(getTheSystem(), getTheFileSeparator(), getTheUserHome());
 
-    AxeereraaRunner axRunner = new AxeereraaRunner(theAppHome, theLookAndFeel);
-  
-//    AxeereraaRunner.setNoteFont();
+    Axeereraa axRunner = new Axeereraa(theAppHome, theLookAndFeel);
     
     try {
       axUI = new AxeereraaUI(axRunner);
@@ -79,6 +76,7 @@ public class AxeereraaRunner {
     /**
      * checks if the folder exists or not & if it's empty or not, and creates it if it doesn't exist.
      */
+    
     if (!APP_HOME_FILE.exists() || !APP_HOME_FILE.isDirectory()) {
       APP_HOME_FILE.mkdir();
       axUI.setNote(new Note("")).showAx();
@@ -103,10 +101,9 @@ public class AxeereraaRunner {
   
   /**
    * This method is used to convertToMarkdown the pre-existing notes that were already saved.
-   * @param runner the AxeereraaRunner object needed to set it up.
+   * @param runner the Axeereraa object needed to set it up.
    */
-  //TODO: this is not getting and displaying all the saved notes
-  private static void displayExistingNotes(AxeereraaRunner runner, String theFileSeparator) {
+  private static void displayExistingNotes(Axeereraa runner, String theFileSeparator) {
     List<Note> result;
     try {
       result = runner.getExistingNotes(theFileSeparator);
@@ -170,33 +167,5 @@ public class AxeereraaRunner {
     }
     
     return notes;
-  }
-  
-  /**
-   *
-   */
-  
-  /*private static void setNoteFont() {
-    try {
-      GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
-      graphicsEnvironment.registerFont(
-              Font.createFont(
-                      Font.TRUETYPE_FONT,
-                      AxeereraaRunner.class.getResourceAsStream(
-                              "/font/Roboto-Medium.ttf"
-                      )
-              )
-      );
-    } catch (IOException | FontFormatException e) {
-      e.printStackTrace();
-    }
-  }*/
-  
-  /**
-   *
-   * @return
-   */
-  public String getTextAreaText() {
-    return null;
   }
 }
