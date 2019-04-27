@@ -23,8 +23,7 @@ public class AxeereraaUI extends JFrame {
   private Axeereraa axRunner;
   private static int COUNTER;
   private JPopupMenu rightClickOptions;
-  private Font f = Font.createFont(Font.TRUETYPE_FONT,
-          Axeereraa.class.getResourceAsStream("/font/Roboto-Medium.ttf"));
+  
   /**
    * A constructor that runs every time a new Axeereraa note is needed or built
    */
@@ -37,9 +36,14 @@ public class AxeereraaUI extends JFrame {
     this.axRunner = axRunner;
     UIManager.setLookAndFeel(axRunner.getLookAndFeel());
     
-  
-    AxeereraaUI.this.setFont(f);
-//    axRootPanel.setFont(f);
+    AxeereraaUI.this.setFont(
+            Font.createFont(
+                    Font.TRUETYPE_FONT,
+                    Axeereraa.class.getResourceAsStream(
+                            "/font/Roboto-Medium.ttf"
+                    )
+            )
+    );
     
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     
@@ -96,7 +100,7 @@ public class AxeereraaUI extends JFrame {
     axRootTextArea.setWrapStyleWord(true);
     
     /**
-     * as the name suggests this sets up the right click options for the text area.
+     * As the name suggests this sets up the right click options for the text area.
      */
     
     SetupRightClickOptions setupRightClickOptions = new SetupRightClickOptions().setup();
@@ -140,19 +144,18 @@ public class AxeereraaUI extends JFrame {
   }
   
   /**
-   *
-   * @param text
-   * @return
+   * This method is responsible for setting the written text from the saved Note object.
+   * @param text written text from the saved Note
    */
-
+  
   private void setAxRootTextAreaText(String text) {
     axRootTextArea.setText(text);
   }
   
   /**
-   *
-   * @param color
-   * @return
+   * This method is responsible for setting the background color of the running instance
+   * of the application from the saved Note object.
+   * @param color the color from the saved Note
    */
 
   private void setAxRootTexAreaColor(Color color) {

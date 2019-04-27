@@ -10,7 +10,7 @@ import java.util.List;
 public class Axeereraa {
   private final String lookAndFeel;
   private final String appHome;
-  private static List<Note> notes = new ArrayList<>();
+  private static final List<Note> notes = new ArrayList<>();
   private static File APP_HOME_FILE = null;
   private static AxeereraaUI axUI;
   private static String theSystem;
@@ -100,7 +100,8 @@ public class Axeereraa {
   }
   
   /**
-   * This method is used to convertToMarkdown the pre-existing notes that were already saved.
+   * This method is used to load and display the
+   * pre-existing notes that were already saved.
    * @param runner the Axeereraa object needed to set it up.
    */
   private static void displayExistingNotes(Axeereraa runner, String theFileSeparator) {
@@ -127,11 +128,12 @@ public class Axeereraa {
   }
   
   /**
-   *
-   * @param theSystem
-   * @param theFileSeparator
-   * @param theUserHome
-   * @return
+   * This method is responsible for getting the system environment in which the applications
+   * runs in.
+   * @param theSystem name of the OS the application runs in
+   * @param theFileSeparator the specific file separator of the OS
+   * @param theUserHome the user folder in which the data will be saved in
+   * @return String representation of t
    */
   private static String getAxEnvironment(String theSystem, String theFileSeparator, String theUserHome) {
     String output;
@@ -149,9 +151,10 @@ public class Axeereraa {
   }
 
   /**
-   *
-   * @return
-   * @throws FileNotFoundException
+   * This method is responsible for getting the saved Notes from the file system.
+   * It calls the read() from the NoteReader class.
+   * @return a List\<Note\> populated with the saved Notes.
+   * @throws FileNotFoundException if it can't find the folder in which the files are saved in.
    */
   private List<Note> getExistingNotes(String theFileSeparator) throws FileNotFoundException {
     File savedNotesLocation = new File(APP_HOME_FILE + theFileSeparator);
