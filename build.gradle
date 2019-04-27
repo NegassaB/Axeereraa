@@ -10,9 +10,6 @@ sourceCompatibility = 1.8
 repositories {
     mavenCentral()
     jcenter()
-    maven {
-        url  "http://dl.bintray.com/steppschuh/Markdown-Generator"
-    }
 }
 
 dependencies {
