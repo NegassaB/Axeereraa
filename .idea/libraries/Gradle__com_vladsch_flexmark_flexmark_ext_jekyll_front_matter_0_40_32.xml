@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.vladsch.flexmark:flexmark-ext-jekyll-front-matter:0.40.32">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vladsch.flexmark/flexmark-ext-jekyll-front-matter/0.40.32/4eba00dd2508650ba98ddeea9eac1618aa3eeef6/flexmark-ext-jekyll-front-matter-0.40.32.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vladsch.flexmark/flexmark-ext-jekyll-front-matter/0.40.32/2e3e1e8de21d8aa8c1db2ffb6ffc8a257f60e422/flexmark-ext-jekyll-front-matter-0.40.32-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

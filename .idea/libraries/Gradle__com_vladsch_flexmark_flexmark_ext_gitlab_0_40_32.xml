@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: com.vladsch.flexmark:flexmark-ext-gitlab:0.40.32">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vladsch.flexmark/flexmark-ext-gitlab/0.40.32/61029627b3390ca15c96337b72b28282799ff136/flexmark-ext-gitlab-0.40.32.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.vladsch.flexmark/flexmark-ext-gitlab/0.40.32/ece4b248e361c91ecf51f20edda282eaf5300a9d/flexmark-ext-gitlab-0.40.32-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
