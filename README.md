@@ -15,5 +15,8 @@ A simple stickynote java application that uses markdown.
 * [flexmark-java](https://github.com/vsch/flexmark-java) for prarsing the markdown.
 * Intellij's own ```forms_rt.jar``` for processing the generated form element.
 
+## Issues
+* [task list is not being displayed properly](https://github.com/NegassaB/Axeereraa/issues/1)
+
 
 Any suggestion, critism, improvement or guidance will be much appreciated and thanked.
