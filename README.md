@@ -1,4 +1,4 @@
-# Axeereraa
+# Axeereraa (read in Qubbee)
 A simple stickynote java application that uses markdown.
 ## Features
 - [x] write a note
@@ -12,7 +12,7 @@ A simple stickynote java application that uses markdown.
 ## Missing features
 
 ## Used libraries
-* (flexmark-java)[https://github.com/vsch/flexmark-java] for prarsing the markdown.
+* [flexmark-java](https://github.com/vsch/flexmark-java) for prarsing the markdown.
 * Intellij's own ```forms_rt.jar``` for processing the generated form element.
 
 
