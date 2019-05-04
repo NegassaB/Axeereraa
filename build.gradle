@@ -1,9 +1,18 @@
 plugins {
     id 'java'
-    id 'checkstyle'
 }
 
-version '1.0-SNAPSHOT'
+jar {
+    manifest {
+        attributes 'Main-Class': 'com.negassagisila.axeereraa.Axeereraa'
+    }
+
+    from {
+        configurations.compile.collect {it.isDirectory() ? it : zipTree(it)}
+    }
+}
+
+version '1.0.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -15,7 +24,7 @@ repositories {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     
-    compile files("libs/annotations-16.0.2.jar")
+    compile files("libs/forms_rt.jar")
     
     testImplementation 'org.mockito:mockito-core:2.1.0'
     testImplementation 'junit:junit:4.12'
@@ -23,3 +32,5 @@ dependencies {
 
     compile 'com.vladsch.flexmark:flexmark-all:0.40.32'
 }
+
+apply plugin: 'java'

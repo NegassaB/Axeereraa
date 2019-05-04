@@ -30,7 +30,6 @@ public class AxeereraaUI extends JFrame {
   
   //TODO: find a way to create a new Note object whenever this constructor runs
   //especially if it's run from a saved file location
-
   public AxeereraaUI(Axeereraa axRunner) throws ClassNotFoundException, UnsupportedLookAndFeelException, InstantiationException, IllegalAccessException, IOException, FontFormatException {
     
     this.axRunner = axRunner;
@@ -47,21 +46,21 @@ public class AxeereraaUI extends JFrame {
     
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     
-    add(axRootPanel);
+    getContentPane().add(axRootPanel);
     setSize(300, 250);
     setTitle("Axeereraa");
     
     buildUI();
     setJMenuBar(axMenuBar);
-
+  
     AxeereraaUI.COUNTER++;
   }
-
+  
   /**
    * This method is responsible for building the components of the UI like
    * the menu bar, the menu and it's options.
    */
-
+  
   //TODO: how about adding a Note parameter to this method that builds the UI
   //it can get the existing notes as it builds the UI or
   //create a new Note object if there aren't any saved notes
@@ -133,6 +132,7 @@ public class AxeereraaUI extends JFrame {
   
   /**
    * This method is responsible for setting the Note to the UI when the previous Notes are loaded.
+   *
    * @param note the Note object that will be set to the UI.
    * @return the UI object that will be displayed.
    */
@@ -145,6 +145,7 @@ public class AxeereraaUI extends JFrame {
   
   /**
    * This method is responsible for setting the written text from the saved Note object.
+   *
    * @param text written text from the saved Note
    */
   
@@ -155,6 +156,7 @@ public class AxeereraaUI extends JFrame {
   /**
    * This method is responsible for setting the background color of the running instance
    * of the application from the saved Note object.
+   *
    * @param color the color from the saved Note
    */
 
@@ -175,19 +177,20 @@ public class AxeereraaUI extends JFrame {
      */
     
     EventQueue.invokeLater(() -> {
-      try {
-        buildUI();
-        setLocationByPlatform(true);
-        setVisible(true);
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      }
+              try {
+                buildUI();
+                setLocationByPlatform(true);
+                setVisible(true);
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
+            }
     );
-}
-
+  }
+  
   /**
    * This method is used to get a single instance of the Note object from the UI
+   *
    * @return new Note(written text, NoteColor)
    */
   
@@ -198,6 +201,7 @@ public class AxeereraaUI extends JFrame {
   /**
    * this method gets the note color from the TextArea background and returns it's equivalent
    * to the calling method as a NoteColor enum object.
+   *
    * @param axRootTextAreaBackgroundColor contains the color of the TextArea.
    * @return outputNoteColor is the NoteColor enum object.
    */
@@ -216,11 +220,12 @@ public class AxeereraaUI extends JFrame {
   
   /**
    * This method is responsible for setting the application always on top
+   *
    * @param status boolean value to be passed to the instance of the UI.
    */
   
   private void stayOnTop(boolean status) {
-
+  
     /**
      * called on every instance of the UI, method from the JFrame class.
      */
@@ -236,6 +241,7 @@ public class AxeereraaUI extends JFrame {
   
   /**
    * changes the icon to lock to show that the result
+   *
    * @param status boolean value of that checks if the always on top has been set
    */
   
@@ -269,6 +275,7 @@ public class AxeereraaUI extends JFrame {
    * This method is responsible for displaying the markdown containing JEditorPane.
    * It calls the remove() method from the root scroll pane to remove the currently displayed
    * axRootTextArea and instead calls the add() method to insert the jEditorPane.
+   *
    * @param jEditorPane the editor pane that contains the markdown that will be displayed
    */
   private void showMarkdown(JEditorPane jEditorPane) {
@@ -287,6 +294,7 @@ public class AxeereraaUI extends JFrame {
   /**
    * This method creates and displays a JDialog that
    * contains the necessary info about the application.
+   *
    * @param titleOfDialog that will be passed to the JDialog setTitle() method.
    */
   private void displayDialog(String titleOfDialog) {
@@ -295,7 +303,7 @@ public class AxeereraaUI extends JFrame {
       messageText = "Axeereraa version 1.0.0\n" +
               "For more info \ngo to the github repo:\n" +
               "github.com/NegassaB/Axeereraa";
-    } else if(titleOfDialog.equals("Contact")){
+    } else if (titleOfDialog.equals("Contact")) {
       messageText = "You can reach the developer via\n" +
               "email or using github.\n" +
               "negassab16@gmail.com\n" +
@@ -308,6 +316,40 @@ public class AxeereraaUI extends JFrame {
             titleOfDialog,
             JOptionPane.INFORMATION_MESSAGE
     );
+  }
+  
+  {
+// GUI initializer generated by IntelliJ IDEA GUI Designer
+// >>> IMPORTANT!! <<<
+// DO NOT EDIT OR ADD ANY CODE HERE!
+    $$$setupUI$$$();
+  }
+  
+  /**
+   * Method generated by IntelliJ IDEA GUI Designer
+   * >>> IMPORTANT!! <<<
+   * DO NOT edit this method OR call it in your code!
+   *
+   * @noinspection ALL
+   */
+  private void $$$setupUI$$$() {
+    axRootPanel = new JPanel();
+    axRootPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+    axRootScrollPane = new JScrollPane();
+    axRootScrollPane.setEnabled(true);
+    axRootScrollPane.setVisible(true);
+    axRootPanel.add(axRootScrollPane, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    axRootTextArea = new JTextArea();
+    axRootTextArea.setLineWrap(true);
+    axRootTextArea.setVisible(true);
+    axRootScrollPane.setViewportView(axRootTextArea);
+  }
+  
+  /**
+   * @noinspection ALL
+   */
+  public JComponent $$$getRootComponent$$$() {
+    return axRootPanel;
   }
   
   /**
@@ -337,7 +379,7 @@ public class AxeereraaUI extends JFrame {
     JMenu getHelpMenu() {
       return helpMenu;
     }
-  
+    
     SetUpMenuAndMenuItems invoke() {
       fileMenu = new JMenu("file");
       editMenu = new JMenu("edit");
@@ -367,10 +409,10 @@ public class AxeereraaUI extends JFrame {
       fileMenuItems[1].addActionListener(e -> removeNote());
       fileMenuItems[2].addActionListener(e -> Axeereraa.saveNote(AxeereraaUI.this.getNote()));
       
-      for(JMenuItem m : fileMenuItems) {
+      for (JMenuItem m : fileMenuItems) {
         fileMenu.add(m);
       }
-  
+      
       JMenuItem[] editMenuItems = new JMenuItem[4];
       editMenuItems[0] = new JMenuItem("Select All");
       editMenuItems[1] = new JMenuItem("Cut");
@@ -413,7 +455,7 @@ public class AxeereraaUI extends JFrame {
       
       stayOnTopMenu.add(alwaysOnTopItem);
       stayOnTopMenu.add(neverOnTopItem);
-  
+      
       viewMenu.add(previewMenu);
       viewMenu.add(stayOnTopMenu);
       
@@ -469,6 +511,7 @@ public class AxeereraaUI extends JFrame {
      * This method is responsible for wiring up the necessary functionality of the JPopupMenu with
      * it's JMenuItems instantiated above. It will set the keyboard accelerators and the
      * ActionListeners for all the MenuItems.
+     *
      * @return this running instance of SetupRightClickOptions class
      */
     
@@ -579,4 +622,5 @@ public class AxeereraaUI extends JFrame {
       return changeNoteColorMenu;
     }
   }
+  
 }

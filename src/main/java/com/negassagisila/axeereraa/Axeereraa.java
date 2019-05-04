@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-//TODO: javadoc the shit outta the entire project
 public class Axeereraa {
   private final String lookAndFeel;
   private final String appHome;
@@ -64,6 +63,7 @@ public class Axeereraa {
             ClassNotFoundException |
             UnsupportedLookAndFeelException |
             FontFormatException |
+            NullPointerException|
             IOException e) {
       e.printStackTrace();
     }
@@ -117,6 +117,7 @@ public class Axeereraa {
             InstantiationException |
             UnsupportedLookAndFeelException |
             ClassNotFoundException |
+            NullPointerException |
             FontFormatException |
             IOException e) {
       e.printStackTrace();
