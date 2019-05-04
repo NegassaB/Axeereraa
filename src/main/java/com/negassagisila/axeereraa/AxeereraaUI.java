@@ -1,5 +1,8 @@
 package com.negassagisila.axeereraa;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -95,9 +98,6 @@ public class AxeereraaUI extends JFrame {
     axMenuBar.add(viewMenu);
     axMenuBar.add(helpMenu);
     
-    axRootTextArea.setLineWrap(true);
-    axRootTextArea.setWrapStyleWord(true);
-    
     /**
      * As the name suggests this sets up the right click options for the text area.
      */
@@ -161,7 +161,6 @@ public class AxeereraaUI extends JFrame {
    */
 
   private void setAxRootTexAreaColor(Color color) {
-    //axRootPanel.setBackground(color);
     axRootTextArea.setBackground(color);
   }
   
@@ -334,11 +333,11 @@ public class AxeereraaUI extends JFrame {
    */
   private void $$$setupUI$$$() {
     axRootPanel = new JPanel();
-    axRootPanel.setLayout(new com.intellij.uiDesigner.core.GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
+    axRootPanel.setLayout(new GridLayoutManager(1, 1, new Insets(0, 0, 0, 0), -1, -1));
     axRootScrollPane = new JScrollPane();
     axRootScrollPane.setEnabled(true);
     axRootScrollPane.setVisible(true);
-    axRootPanel.add(axRootScrollPane, new com.intellij.uiDesigner.core.GridConstraints(0, 0, 1, 1, com.intellij.uiDesigner.core.GridConstraints.ANCHOR_CENTER, com.intellij.uiDesigner.core.GridConstraints.FILL_BOTH, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_CAN_SHRINK | com.intellij.uiDesigner.core.GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+    axRootPanel.add(axRootScrollPane, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
     axRootTextArea = new JTextArea();
     axRootTextArea.setLineWrap(true);
     axRootTextArea.setVisible(true);
@@ -485,7 +484,12 @@ public class AxeereraaUI extends JFrame {
     public void mousePressed(MouseEvent e) {
       showRightClickOptions(e);
     }
-    
+  
+    @Override
+    public void mouseClicked(MouseEvent e) {
+      showRightClickOptions(e);
+    }
+  
     private void showRightClickOptions(MouseEvent e) {
       if (e.isPopupTrigger()) {
         rightClickOptions.show(e.getComponent(), e.getX(), e.getY());
@@ -598,6 +602,7 @@ public class AxeereraaUI extends JFrame {
   
     /**
      * Method used to get the cutRightClickMenuItem
+     *
      * @return cutRightClickMenuItem
      */
     
