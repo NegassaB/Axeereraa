@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
+import java.io.InputStream;
 
 //TODO: 7. run & test (currently no other option, sorry)
 
@@ -37,15 +38,19 @@ public class AxeereraaUI extends JFrame {
     
     this.axRunner = axRunner;
     UIManager.setLookAndFeel(axRunner.getLookAndFeel());
-    
-    AxeereraaUI.this.setFont(
-            Font.createFont(
-                    Font.TRUETYPE_FONT,
-                    Axeereraa.class.getResourceAsStream(
-                            "/font/Roboto-Medium.ttf"
-                    )
-            )
+  
+    InputStream resourceAsStream = Axeereraa.class.getResourceAsStream(
+            "/font/Roboto-Medium.ttf"
     );
+    
+    Font font = Font.createFont(
+            Font.TRUETYPE_FONT,
+            resourceAsStream).deriveFont(Font.PLAIN, 18);
+    
+    resourceAsStream.close();
+    
+    axRootPanel.setFont(font);
+    axRootTextArea.setFont(font);
     
     setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
     
@@ -194,7 +199,7 @@ public class AxeereraaUI extends JFrame {
    */
   
   private Note getNote() {
-    return new Note(this.axRootTextArea.getText(), this.getAxRooTextAreaColor(this.axRootTextArea.getBackground()));
+    return new Note(axRootTextArea.getText(), getAxRooTextAreaColor(axRootTextArea.getBackground()));
   }
   
   /**
@@ -229,7 +234,7 @@ public class AxeereraaUI extends JFrame {
      * called on every instance of the UI, method from the JFrame class.
      */
     
-    this.setAlwaysOnTop(status);
+    setAlwaysOnTop(status);
   
     /**
      * changes the icon to lock to show that the result
@@ -248,7 +253,7 @@ public class AxeereraaUI extends JFrame {
     //todo: find a way to display the lock.png image on the axRootPanel or axRootTextArea
     if (status) {
       try {
-        Image lockIcon = ImageIO.read(this.getClass().getResource("/images/lock.png"));
+        Image lockIcon = ImageIO.read(getClass().getResource("/images/lock.png"));
         
       } catch (IOException e) {
         e.printStackTrace();
@@ -261,7 +266,7 @@ public class AxeereraaUI extends JFrame {
    */
   
   private void removeNote() {
-    this.setVisible(false);
+    setVisible(false);
     AxeereraaUI.COUNTER--;
     //TODO: delete the Note file
     if (AxeereraaUI.COUNTER == 0) {
@@ -279,15 +284,15 @@ public class AxeereraaUI extends JFrame {
    */
   private void showMarkdown(JEditorPane jEditorPane) {
     jEditorPane.addMouseListener(new RightClickOptions());
-    this.axRootScrollPane.getViewport().remove(axRootTextArea);
-    this.axRootScrollPane.getViewport().add(jEditorPane);
+    axRootScrollPane.getViewport().remove(axRootTextArea);
+    axRootScrollPane.getViewport().add(jEditorPane);
   }
   
   /**
    * This method is responsible for showing the raw text instead of the markdown.
    */
   private void showRawText() {
-    this.axRootScrollPane.getViewport().add(axRootTextArea);
+    axRootScrollPane.getViewport().add(axRootTextArea);
   }
   
   /**
@@ -406,7 +411,7 @@ public class AxeereraaUI extends JFrame {
               }
       );
       fileMenuItems[1].addActionListener(e -> removeNote());
-      fileMenuItems[2].addActionListener(e -> Axeereraa.saveNote(AxeereraaUI.this.getNote()));
+      fileMenuItems[2].addActionListener(e -> Axeereraa.saveNote(getNote()));
       
       for (JMenuItem m : fileMenuItems) {
         fileMenu.add(m);
