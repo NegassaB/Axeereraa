@@ -80,8 +80,6 @@ public class AxeereraaUI extends JFrame {
     axRootScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     axRootScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
-    axRootTextArea.addMouseListener(new RightClickOptions());
-    
     axRootScrollPane.getVerticalScrollBar().setPreferredSize(
             new Dimension(3, Integer.MAX_VALUE));
     
@@ -133,6 +131,8 @@ public class AxeereraaUI extends JFrame {
                     )
             )
     );
+    
+    axRootTextArea.setComponentPopupMenu(rightClickOptions);
   }
   
   /**
@@ -283,7 +283,7 @@ public class AxeereraaUI extends JFrame {
    * @param jEditorPane the editor pane that contains the markdown that will be displayed
    */
   private void showMarkdown(JEditorPane jEditorPane) {
-    jEditorPane.addMouseListener(new RightClickOptions());
+    jEditorPane.setComponentPopupMenu(rightClickOptions);
     axRootScrollPane.getViewport().remove(axRootTextArea);
     axRootScrollPane.getViewport().add(jEditorPane);
   }
@@ -477,29 +477,6 @@ public class AxeereraaUI extends JFrame {
       return this;
     }
     
-  }
-  
-  /**
-   * This class displays the right click options when the axRootTextArea is right clicked.
-   */
-  
-  private class RightClickOptions extends MouseAdapter {
-  
-    @Override
-    public void mousePressed(MouseEvent e) {
-      showRightClickOptions(e);
-    }
-  
-    @Override
-    public void mouseClicked(MouseEvent e) {
-      showRightClickOptions(e);
-    }
-  
-    private void showRightClickOptions(MouseEvent e) {
-      if (e.isPopupTrigger()) {
-        rightClickOptions.show(e.getComponent(), e.getX(), e.getY());
-      }
-    }
   }
   
   /**
