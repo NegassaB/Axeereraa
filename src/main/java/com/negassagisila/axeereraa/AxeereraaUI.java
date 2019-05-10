@@ -8,12 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
-
-//TODO: 7. run & test (currently no other option, sorry)
 
 /**
  * The actual user interface for the Axeereraa application.
@@ -80,8 +76,6 @@ public class AxeereraaUI extends JFrame {
     axRootScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
     axRootScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
-    axRootTextArea.addMouseListener(new RightClickOptions());
-    
     axRootScrollPane.getVerticalScrollBar().setPreferredSize(
             new Dimension(3, Integer.MAX_VALUE));
     
@@ -133,6 +127,8 @@ public class AxeereraaUI extends JFrame {
                     )
             )
     );
+    
+    axRootTextArea.setComponentPopupMenu(rightClickOptions);
   }
   
   /**
@@ -283,7 +279,7 @@ public class AxeereraaUI extends JFrame {
    * @param jEditorPane the editor pane that contains the markdown that will be displayed
    */
   private void showMarkdown(JEditorPane jEditorPane) {
-    jEditorPane.addMouseListener(new RightClickOptions());
+    jEditorPane.setComponentPopupMenu(rightClickOptions);
     axRootScrollPane.getViewport().remove(axRootTextArea);
     axRootScrollPane.getViewport().add(jEditorPane);
   }
@@ -442,7 +438,7 @@ public class AxeereraaUI extends JFrame {
       JMenu previewMenu = new JMenu("preview");
       JMenuItem[] previewMenuItems = new JMenuItem[2];
       previewMenuItems[0] = new JMenuItem("show markdown");
-      previewMenuItems[0].addActionListener(e -> showMarkdown(DisplayMarkdown.displayMarkdown(axRootTextArea.getText())));
+      previewMenuItems[0].addActionListener(e -> showMarkdown(new DisplayMarkdown().displayMarkdown(axRootTextArea.getText())));
       previewMenuItems[1] = new JMenuItem("show raw text");
       previewMenuItems[1].addActionListener(e -> showRawText());
       
@@ -477,29 +473,6 @@ public class AxeereraaUI extends JFrame {
       return this;
     }
     
-  }
-  
-  /**
-   * This class displays the right click options when the axRootTextArea is right clicked.
-   */
-  
-  private class RightClickOptions extends MouseAdapter {
-  
-    @Override
-    public void mousePressed(MouseEvent e) {
-      showRightClickOptions(e);
-    }
-  
-    @Override
-    public void mouseClicked(MouseEvent e) {
-      showRightClickOptions(e);
-    }
-  
-    private void showRightClickOptions(MouseEvent e) {
-      if (e.isPopupTrigger()) {
-        rightClickOptions.show(e.getComponent(), e.getX(), e.getY());
-      }
-    }
   }
   
   /**
@@ -567,7 +540,7 @@ public class AxeereraaUI extends JFrame {
       
       JMenuItem[] markdownOptions = new JMenuItem[2];
       markdownOptions[0] = new JMenuItem("show markdown");
-      markdownOptions[0].addActionListener(e -> showMarkdown(DisplayMarkdown.displayMarkdown(axRootTextArea.getText())));
+      markdownOptions[0].addActionListener(e -> showMarkdown(new DisplayMarkdown().displayMarkdown(axRootTextArea.getText())));
       markdownOptions[1] = new JMenuItem("back to raw text");
       markdownOptions[1].addActionListener(e -> showRawText());
       
