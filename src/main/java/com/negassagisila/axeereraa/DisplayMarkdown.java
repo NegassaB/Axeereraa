@@ -40,9 +40,9 @@ class DisplayMarkdown {
    * @param writtenMarkDownText markdown text that will be parsed by DisplayMarkdown.convertToMarkdown()
    * @return a JEditorPane that will be displayed
    */
-  static JEditorPane displayMarkdown(String writtenMarkDownText) {
+  JEditorPane displayMarkdown(String writtenMarkDownText) {
     JEditorPane markdownPane = new JEditorPane("text/html", DisplayMarkdown.convertToMarkdown(writtenMarkDownText));
-    markdownPane.setEditable(false);
+    markdownPane.setEditable(true);
     return markdownPane;
   }
 }

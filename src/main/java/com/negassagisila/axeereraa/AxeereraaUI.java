@@ -8,12 +8,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
-
-//TODO: 7. run & test (currently no other option, sorry)
 
 /**
  * The actual user interface for the Axeereraa application.
@@ -442,7 +438,7 @@ public class AxeereraaUI extends JFrame {
       JMenu previewMenu = new JMenu("preview");
       JMenuItem[] previewMenuItems = new JMenuItem[2];
       previewMenuItems[0] = new JMenuItem("show markdown");
-      previewMenuItems[0].addActionListener(e -> showMarkdown(DisplayMarkdown.displayMarkdown(axRootTextArea.getText())));
+      previewMenuItems[0].addActionListener(e -> showMarkdown(new DisplayMarkdown().displayMarkdown(axRootTextArea.getText())));
       previewMenuItems[1] = new JMenuItem("show raw text");
       previewMenuItems[1].addActionListener(e -> showRawText());
       
@@ -544,7 +540,7 @@ public class AxeereraaUI extends JFrame {
       
       JMenuItem[] markdownOptions = new JMenuItem[2];
       markdownOptions[0] = new JMenuItem("show markdown");
-      markdownOptions[0].addActionListener(e -> showMarkdown(DisplayMarkdown.displayMarkdown(axRootTextArea.getText())));
+      markdownOptions[0].addActionListener(e -> showMarkdown(new DisplayMarkdown().displayMarkdown(axRootTextArea.getText())));
       markdownOptions[1] = new JMenuItem("back to raw text");
       markdownOptions[1].addActionListener(e -> showRawText());
       

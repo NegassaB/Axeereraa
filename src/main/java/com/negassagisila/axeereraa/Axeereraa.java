@@ -12,9 +12,7 @@ public class Axeereraa {
   private final String appHome;
   private static final List<Note> notes = new ArrayList<>();
   private static File APP_HOME_FILE = null;
-  private static AxeereraaUI axUI;
   private static String theSystem;
-  
   private static String theFileSeparator;
   private static String theUserHome;
   
@@ -53,8 +51,10 @@ public class Axeereraa {
     String theLookAndFeel = UIManager.getSystemLookAndFeelClassName();
 
     String theAppHome = getAxEnvironment(getTheSystem(), getTheFileSeparator(), getTheUserHome());
-
+    
     Axeereraa axRunner = new Axeereraa(theAppHome, theLookAndFeel);
+  
+    AxeereraaUI axUI = null;
     
     try {
       axUI = new AxeereraaUI(axRunner);
@@ -77,9 +77,10 @@ public class Axeereraa {
     
     if (!APP_HOME_FILE.exists() || !APP_HOME_FILE.isDirectory()) {
       APP_HOME_FILE.mkdir();
+      assert axUI != null;
       axUI.setNote(new Note("")).showAx();
     } else {
-      displayExistingNotes(axRunner, theFileSeparator);
+      displayExistingNotes(axRunner, theFileSeparator, axUI);
     }
 
   }
@@ -102,7 +103,7 @@ public class Axeereraa {
    * pre-existing notes that were already saved.
    * @param runner the Axeereraa object needed to set it up.
    */
-  private static void displayExistingNotes(Axeereraa runner, String theFileSeparator) {
+  private static void displayExistingNotes(Axeereraa runner, String theFileSeparator, AxeereraaUI ui) {
     List<Note> result;
     try {
       result = runner.getExistingNotes(theFileSeparator);
@@ -111,7 +112,7 @@ public class Axeereraa {
                 .showAx();
       }
       if (result.isEmpty()) {
-        axUI.setNote(new Note("")).showAx();
+        ui.setNote(new Note("")).showAx();
       }
     } catch (IllegalAccessException |
             InstantiationException |
