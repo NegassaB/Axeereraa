@@ -8,6 +8,7 @@ A simple sticky note java application that uses markdown.
 - [x] preview the written markdown
 - [x] stay on top
 - [x] help menu showing about and how to contact the developer
+- [x] properly display task list items
 
 ## Missing features
 
@@ -16,7 +17,5 @@ A simple sticky note java application that uses markdown.
 * Intellij's own ```forms_rt.jar``` for processing the generated form element.
 
 ## Issues
-* [task list is not being displayed properly](https://github.com/NegassaB/Axeereraa/issues/1)
-
 
 Any suggestion, criticism, improvement or guidance will be much appreciated and thanked.
