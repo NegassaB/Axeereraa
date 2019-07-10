@@ -18,16 +18,21 @@ public class Note implements Serializable {
   private String writtenText;
   private NoteColor noteColor;
   private boolean currentlyEditing;
+  private float uniqueId;
   private static final NoteColor DEFAULT_NOTE_COLOR = NoteColor.lightYellow;
 
   public Note(String writtenText, NoteColor noteColor) {
     this.writtenText = writtenText;
     this.noteColor = noteColor;
+    currentlyEditing = false;
+    uniqueId = (float) (Math.random() * 100.f);
   }
 
   public Note(String writtenText) {
     this.writtenText = writtenText;
     noteColor = DEFAULT_NOTE_COLOR;
+    currentlyEditing = false;
+    uniqueId = (float) (Math.random() * 100.f);
   }
   
   void setNoteColor(NoteColor chosenColor) {
@@ -60,7 +65,11 @@ public class Note implements Serializable {
   boolean getCurrentlyEditing() {
     return currentlyEditing;
   }
-
+  
+  public float getUniqueId() {
+    return uniqueId;
+  }
+  
   @Override
   public int hashCode() {
       return Objects.hashCode(writtenText) + Objects.hashCode(noteColor);
@@ -80,4 +89,5 @@ public class Note implements Serializable {
     }
     return output;
   }
+  
 }
