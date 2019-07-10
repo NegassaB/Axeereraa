@@ -91,7 +91,7 @@ public class Axeereraa {
   
   static void saveNote(Note n) {
     try {
-      final String noteName = "Axeereraa".concat(String.valueOf(n.hashCode())).concat(".ser");
+      final String noteName = "Axeereraa".concat(String.valueOf(n.getUniqueId())).concat(".ser");
       new NoteSaver(new FileOutputStream(APP_HOME_FILE + theFileSeparator + noteName)).save(n);
     } catch (FileNotFoundException e) {
       e.printStackTrace();
