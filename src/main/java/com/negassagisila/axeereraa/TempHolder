@@ -3,3 +3,33 @@
 3. when it's being saved change it to false
 4. save by using a combination of "Axeereraa" + num
 5. use the above to edit and/or delete
+
+/**
+   * This method is responsible for deleting a single instance of a note file from storage
+   */
+
+  static boolean deleteNote(Note noteToDelete) {
+    for(Note n : Axeereraa.notes) {
+      if (n.getUniqueId() == noteToDelete.getUniqueId()) {
+        NoteDeleter.deleteNote();
+      }
+    }
+    AxeereraaUI.COUNTER--;
+    //TODO: delete the Note file
+    if (AxeereraaUI.COUNTER == 0) {
+      System.exit(0);
+    }
+    return false;
+  }
+
+  /**
+     * This method is responsible for removing the deleted note from the UI
+     */
+
+    private void removeNote() {
+      if (Axeereraa.deleteNote()) {
+        setVisible(false);
+        AxeereraaUI.COUNTER--;
+      }
+      if (AxeereraaUI.COUNTER == 0) System.exit(0);
+    }

@@ -262,13 +262,11 @@ public class AxeereraaUI extends JFrame {
    */
   
   private void removeNote() {
-    setVisible(false);
-    AxeereraaUI.COUNTER--;
-    //TODO: delete the Note file
-    if (AxeereraaUI.COUNTER == 0) {
-      System.exit(0);
+    /*if (Axeereraa.deleteNote()) {
+      setVisible(false);
+      AxeereraaUI.COUNTER--;
     }
-    //NoteDeleter.deleteNote();
+    if (AxeereraaUI.COUNTER == 0) System.exit(0);*/
   }
   
   /**
