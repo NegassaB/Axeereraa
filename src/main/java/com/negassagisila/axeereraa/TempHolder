@@ -1,0 +1,5 @@
+1. add a boolean field by the name of currentlyEditing and set that to false
+2. whenever this object is being edited set the above field to true and block all access to it
+3. when it's being saved change it to false
+4. save by using a combination of "Axeereraa" + num
+5. use the above to edit and/or delete

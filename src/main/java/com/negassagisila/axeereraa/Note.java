@@ -17,6 +17,7 @@ public class Note implements Serializable {
 
   private String writtenText;
   private NoteColor noteColor;
+  private boolean currentlyEditing;
   private static final NoteColor DEFAULT_NOTE_COLOR = NoteColor.lightYellow;
 
   public Note(String writtenText, NoteColor noteColor) {
@@ -30,11 +31,22 @@ public class Note implements Serializable {
   }
   
   void setNoteColor(NoteColor chosenColor) {
+    if (currentlyEditing)
       noteColor = chosenColor;
+    else {
+      throw new RuntimeException("boolean value for editing is not set");
+    }
   }
 
   void setWrittenText(String insertedText) {
-      writtenText = insertedText;
+    if (currentlyEditing) writtenText = insertedText;
+    else {
+      throw new RuntimeException("boolean value for editing is not set");
+    }
+  }
+  
+  void setCurrentlyEditing(boolean value) {
+    currentlyEditing = value;
   }
   
   String getWrittenText() {
@@ -43,6 +55,10 @@ public class Note implements Serializable {
 
   Color getNoteColor() {
       return NoteColor.getTheColorOfTheNote(noteColor);
+  }
+  
+  boolean getCurrentlyEditing() {
+    return currentlyEditing;
   }
 
   @Override
